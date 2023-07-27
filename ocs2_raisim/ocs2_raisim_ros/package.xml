@@ -22,4 +22,7 @@
 
   <exec_depend>grid_map_rviz_plugin</exec_depend>
 
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
 </package>

@@ -27,4 +27,8 @@
   <exec_depend>ocs2_robotic_examples</exec_depend>
   <exec_depend>ocs2_pinocchio</exec_depend>
 
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+
 </package>

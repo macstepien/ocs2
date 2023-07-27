@@ -1,13 +1,18 @@
 cmake_minimum_required(VERSION 3.8)
 project(ocs2_ddp)
 
-find_package(ament_cmake REQUIRED COMPONENTS
-  cmake_modules
+set(AMENT_PACKAGE_DEPENDENCIES
+  ament_cmake
   ocs2_core
   ocs2_oc
   ocs2_mpc
   ocs2_qp_solver
 )
+
+foreach(Dependency IN ITEMS ${AMENT_PACKAGE_DEPENDENCIES})
+  find_package(${Dependency} REQUIRED)
+endforeach()
+
 find_package(Boost REQUIRED COMPONENTS
   system
   filesystem
@@ -44,11 +49,17 @@ add_library(${PROJECT_NAME}
   src/DDP_Settings.cpp
   src/DDP_HelperFunctions.cpp
 )
+ament_target_dependencies(${PROJECT_NAME}
+  ${AMENT_PACKAGE_DEPENDENCIES}
+)
 target_link_libraries(${PROJECT_NAME})
 target_compile_options(${PROJECT_NAME} PUBLIC ${OCS2_CXX_FLAGS})
 
 add_executable(${PROJECT_NAME}_lintTarget
   src/lintTarget.cpp
+)
+ament_target_dependencies(${PROJECT_NAME}_lintTarget
+  ${AMENT_PACKAGE_DEPENDENCIES}
 )
 
 #########################

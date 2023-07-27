@@ -16,4 +16,8 @@
 
   <depend>ocs2_thirdparty</depend>
 
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+
 </package>

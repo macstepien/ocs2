@@ -1,11 +1,16 @@
 cmake_minimum_required(VERSION 3.8)
 project(ocs2_mpc)
 
-find_package(ament_cmake REQUIRED COMPONENTS
-  cmake_modules
+set(PACKAGE_INCLUDE_DEPENDS
+  ament_cmake
   ocs2_core
   ocs2_oc
 )
+
+foreach(Dependency IN ITEMS ${PACKAGE_INCLUDE_DEPENDS})
+  find_package(${Dependency} REQUIRED)
+endforeach()
+
 find_package(Boost REQUIRED COMPONENTS
   system
   filesystem
@@ -24,6 +29,8 @@ include_directories(
   include
   ${EIGEN3_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIRS}
+  ${ocs2_core_INCLUDE_DIRS}
+  ${ocs2_oc_INCLUDE_DIRS}
 )
 
 add_library(${PROJECT_NAME}

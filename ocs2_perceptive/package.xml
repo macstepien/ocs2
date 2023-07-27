@@ -13,4 +13,7 @@
   <depend>ocs2_core</depend>
   <depend>ocs2_robotic_tools</depend>
 
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
 </package>

@@ -20,4 +20,8 @@
   <depend>ocs2_pinocchio_interface</depend>
   <depend>ocs2_ros_interfaces</depend>
   <depend>ocs2_self_collision</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
 </package>

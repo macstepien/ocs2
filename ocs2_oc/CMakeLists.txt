@@ -1,11 +1,9 @@
 cmake_minimum_required(VERSION 3.8)
 project(ocs2_oc)
 
-find_package(ament_cmake REQUIRED COMPONENTS
-  cmake_modules
-  ocs2_core
-  # ocs2_qp_solver
-)
+find_package(ament_cmake REQUIRED)
+find_package(ocs2_core REQUIRED)
+
 find_package(Boost REQUIRED COMPONENTS
   system
   filesystem
@@ -27,7 +25,7 @@ include_directories(
   ${Boost_INCLUDE_DIRS}
 )
 
-add_library(${PROJECT_NAME}
+add_library(${PROJECT_NAME} SHARED
   src/approximate_model/ChangeOfInputVariables.cpp
   src/approximate_model/LinearQuadraticApproximator.cpp
   src/multiple_shooting/Helpers.cpp
@@ -61,11 +59,17 @@ add_library(${PROJECT_NAME}
   src/search_strategy/FilterLinesearch.cpp
   src/trajectory_adjustment/TrajectorySpreading.cpp
 )
+ament_target_dependencies(${PROJECT_NAME}
+  ocs2_core
+)
 target_link_libraries(${PROJECT_NAME})
 target_compile_options(${PROJECT_NAME} PUBLIC ${OCS2_CXX_FLAGS})
 
 add_executable(${PROJECT_NAME}_lintTarget
   src/lintTarget.cpp
+)
+ament_target_dependencies(${PROJECT_NAME}_lintTarget
+  ocs2_core
 )
 
 #########################
@@ -79,7 +83,7 @@ if(cmake_clang_tools_FOUND)
     SOURCE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/src ${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/test/include
     CT_HEADER_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include
     CF_WERROR
-)
+  )
 endif(cmake_clang_tools_FOUND)
 
 #############
@@ -186,7 +190,7 @@ ament_export_dependencies(ocs2_core
 Boost)
 
 ament_export_include_directories(include
-  test/include
+  # test/include
   ${EIGEN3_INCLUDE_DIRS})
 
 ament_export_libraries(${PROJECT_NAME})

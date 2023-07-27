@@ -5,6 +5,7 @@ project(ocs2_self_collision_visualization)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(AMENT_PACKAGE_DEPENDENCIES
+  ament_cmake
   ocs2_core
   ocs2_robotic_tools
   ocs2_pinocchio_interface
@@ -18,9 +19,11 @@ set(AMENT_PACKAGE_DEPENDENCIES
   visualization_msgs
 )
 
-find_package(ament_cmake REQUIRED COMPONENTS
-  ${AMENT_PACKAGE_DEPENDENCIES}
-)
+
+
+foreach(Dependency IN ITEMS ${AMENT_PACKAGE_DEPENDENCIES})
+  find_package(${Dependency} REQUIRED)
+endforeach()
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(pinocchio REQUIRED pinocchio)

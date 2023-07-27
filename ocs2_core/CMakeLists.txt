@@ -1,10 +1,8 @@
 cmake_minimum_required(VERSION 3.8)
 project(ocs2_core)
 
-find_package(ament_cmake REQUIRED COMPONENTS
-  cmake_modules
-  ocs2_thirdparty
-)
+find_package(ament_cmake REQUIRED)
+find_package(ocs2_thirdparty REQUIRED)
 
 find_package(Boost REQUIRED COMPONENTS
   system
@@ -43,7 +41,7 @@ include_directories(
 )
 
 # Declare a C++ library
-add_library(${PROJECT_NAME}
+add_library(${PROJECT_NAME} SHARED
   src/Types.cpp
   src/augmented_lagrangian/AugmentedLagrangian.cpp
   src/augmented_lagrangian/StateAugmentedLagrangian.cpp
@@ -170,8 +168,11 @@ install(
   RUNTIME DESTINATION bin
 )
 
+# install(DIRECTORY include/
+#   DESTINATION include)
 install(DIRECTORY include/${PROJECT_NAME}/
-  DESTINATION include)
+  DESTINATION include/${PROJECT_NAME}
+)
 
 install(DIRECTORY test/include/${PROJECT_NAME}/
   DESTINATION include
@@ -182,189 +183,190 @@ install(DIRECTORY test/include/${PROJECT_NAME}/
 #############
 
 if(BUILD_TESTING)
-find_package(ament_cmake_gtest REQUIRED)
-ament_add_gtest(test_control
-  test/control/testLinearController.cpp
-  test/control/testFeedforwardController.cpp
-)
-target_link_libraries(test_control
-  ${PROJECT_NAME}
-  gtest_main
-)
-
-ament_add_gtest(initialization_unittest
-  test/initialization/InitializationTest.cpp
-)
-target_link_libraries(initialization_unittest
-  ${PROJECT_NAME}
-  ${Boost_LIBRARIES}
-  gtest_main
-)
-
-ament_add_gtest(test_integration
-  test/integration/testSensitivityIntegrator.cpp
-  test/integration/IntegrationTest.cpp
-  test/integration/testRungeKuttaDormandPrince5.cpp
-  test/integration/TrapezoidalIntegrationTest.cpp
-)
-target_link_libraries(test_integration
-  ${PROJECT_NAME}
-  ${Boost_LIBRARIES}
-  gtest_main
-)
-
-ament_add_gtest(interpolation_unittest
-  test/misc/testInterpolation.cpp
-)
-target_link_libraries(interpolation_unittest
-  ${PROJECT_NAME}
-  gtest_main
-)
-
-ament_add_gtest(${PROJECT_NAME}_cppadcg
-  test/cppad_cg/testCppADCG_dynamics.cpp
-  test/cppad_cg/testSparsityHelpers.cpp
-  test/cppad_cg/testCppAdInterface.cpp
-)
-target_link_libraries(${PROJECT_NAME}_cppadcg
-  ${PROJECT_NAME}
-  ${Boost_LIBRARIES}
-  -lm -ldl
-  gtest_main
-)
-
-ament_add_gtest(test_transferfunctionbase
-  test/dynamics/testTransferfunctionBase.cpp
-)
-target_link_libraries(test_transferfunctionbase
-  ${PROJECT_NAME}
-  gtest_main
-)
-
-ament_add_gtest(${PROJECT_NAME}_loopshaping
-  test/loopshaping/testLoopshapingConfiguration.cpp
-  test/loopshaping/testLoopshapingAugmentedLagrangian.cpp
-  test/loopshaping/testLoopshapingConstraint.cpp
-  test/loopshaping/testLoopshapingCost.cpp
-  test/loopshaping/testLoopshapingSoftConstraint.cpp
-  test/loopshaping/testLoopshapingDefinition.cpp
-  test/loopshaping/testLoopshapingDynamics.cpp
-  test/loopshaping/testLoopshapingFilterDynamics.cpp
-  test/loopshaping/testLoopshapingPreComputation.cpp
-)
-target_link_libraries(${PROJECT_NAME}_loopshaping
-  ${PROJECT_NAME}
-  ${Boost_LIBRARIES}
-  -lstdc++fs
-  gtest_main
-)
-
-ament_add_gtest(${PROJECT_NAME}_test_misc
-  test/misc/testInterpolation.cpp
-  test/misc/testLinearAlgebra.cpp
-  test/misc/testLogging.cpp
-  test/misc/testLoadData.cpp
-  test/misc/testLookup.cpp
-)
-target_link_libraries(${PROJECT_NAME}_test_misc
-  ${PROJECT_NAME}
-  ${Boost_LIBRARIES}
-  gtest_main
-)
-
-ament_add_gtest(test_dynamics
-  test/dynamics/testSystemDynamicsLinearizer.cpp
-  test/dynamics/testSystemDynamicsPreComputation.cpp
-)
-target_link_libraries(test_dynamics
-  ${PROJECT_NAME}
-  gtest_main
-)
-
-ament_add_gtest(test_cost
-  test/cost/testCostCollection.cpp
-  test/cost/testCostCppAd.cpp
-  test/cost/testQuadraticCostFunction.cpp
-)
-target_link_libraries(test_cost
-  ${PROJECT_NAME}
-  ${Boost_LIBRARIES}
-  gtest_main
-)
-
-ament_add_gtest(test_constraint
-  test/constraint/testConstraintCollection.cpp
-  test/constraint/testConstraintCppAd.cpp
-  test/constraint/testLinearConstraint.cpp
-)
-target_link_libraries(test_constraint
-  ${PROJECT_NAME}
-  ${Boost_LIBRARIES}
-  gtest_main
-)
-
-ament_add_gtest(test_metrics
-  test/model_data/testMetrics.cpp
-)
-target_link_libraries(test_metrics
-  ${PROJECT_NAME}
-  gtest_main
-)
-
-ament_add_gtest(test_multiplier
-  test/model_data/testMultiplier.cpp
-)
-target_link_libraries(test_multiplier
-  ${PROJECT_NAME}
-  gtest_main
-)
-
-ament_add_gtest(test_ModelData
-  test/model_data/testModelData.cpp
-)
-target_link_libraries(test_ModelData
-  ${PROJECT_NAME}
-  gtest_main
-)
-
-ament_add_gtest(test_ModeSchedule
-  test/reference/testModeSchedule.cpp
-)
-target_link_libraries(test_ModeSchedule
-  ${PROJECT_NAME}
-  gtest_main
-)
-
-ament_add_gtest(test_softConstraint
-  test/soft_constraint/testSoftConstraint.cpp
-  test/soft_constraint/testDoubleSidedPenalty.cpp
-)
-target_link_libraries(test_softConstraint
-  ${PROJECT_NAME}
-  ${Boost_LIBRARIES}
-  gtest_main
-)
-
-ament_add_gtest(${PROJECT_NAME}_test_thread_support
-  test/thread_support/testBufferedValue.cpp
-  test/thread_support/testSynchronized.cpp
-  test/thread_support/testThreadPool.cpp
-)
-target_link_libraries(${PROJECT_NAME}_test_thread_support
-  ${PROJECT_NAME}
-  ${Boost_LIBRARIES}
-  gtest_main
-)
-
-ament_add_gtest(${PROJECT_NAME}_test_core
-  test/testPrecomputation.cpp
-  test/testTypes.cpp
+  find_package(ament_cmake_gtest REQUIRED)
+  
+  ament_add_gtest(test_control
+    test/control/testLinearController.cpp
+    test/control/testFeedforwardController.cpp
   )
-target_link_libraries(${PROJECT_NAME}_test_core
-  ${PROJECT_NAME}
-  ${Boost_LIBRARIES}
-  gtest_main
-)
+  target_link_libraries(test_control
+    ${PROJECT_NAME}
+    gtest_main
+  )
+
+  ament_add_gtest(initialization_unittest
+    test/initialization/InitializationTest.cpp
+  )
+  target_link_libraries(initialization_unittest
+    ${PROJECT_NAME}
+    ${Boost_LIBRARIES}
+    gtest_main
+  )
+
+  ament_add_gtest(test_integration
+    test/integration/testSensitivityIntegrator.cpp
+    test/integration/IntegrationTest.cpp
+    test/integration/testRungeKuttaDormandPrince5.cpp
+    test/integration/TrapezoidalIntegrationTest.cpp
+  )
+  target_link_libraries(test_integration
+    ${PROJECT_NAME}
+    ${Boost_LIBRARIES}
+    gtest_main
+  )
+
+  ament_add_gtest(interpolation_unittest
+    test/misc/testInterpolation.cpp
+  )
+  target_link_libraries(interpolation_unittest
+    ${PROJECT_NAME}
+    gtest_main
+  )
+
+  ament_add_gtest(${PROJECT_NAME}_cppadcg
+    test/cppad_cg/testCppADCG_dynamics.cpp
+    test/cppad_cg/testSparsityHelpers.cpp
+    test/cppad_cg/testCppAdInterface.cpp
+  )
+  target_link_libraries(${PROJECT_NAME}_cppadcg
+    ${PROJECT_NAME}
+    ${Boost_LIBRARIES}
+    -lm -ldl
+    gtest_main
+  )
+
+  ament_add_gtest(test_transferfunctionbase
+    test/dynamics/testTransferfunctionBase.cpp
+  )
+  target_link_libraries(test_transferfunctionbase
+    ${PROJECT_NAME}
+    gtest_main
+  )
+
+  ament_add_gtest(${PROJECT_NAME}_loopshaping
+    test/loopshaping/testLoopshapingConfiguration.cpp
+    test/loopshaping/testLoopshapingAugmentedLagrangian.cpp
+    test/loopshaping/testLoopshapingConstraint.cpp
+    test/loopshaping/testLoopshapingCost.cpp
+    test/loopshaping/testLoopshapingSoftConstraint.cpp
+    test/loopshaping/testLoopshapingDefinition.cpp
+    test/loopshaping/testLoopshapingDynamics.cpp
+    test/loopshaping/testLoopshapingFilterDynamics.cpp
+    test/loopshaping/testLoopshapingPreComputation.cpp
+  )
+  target_link_libraries(${PROJECT_NAME}_loopshaping
+    ${PROJECT_NAME}
+    ${Boost_LIBRARIES}
+    -lstdc++fs
+    gtest_main
+  )
+
+  ament_add_gtest(${PROJECT_NAME}_test_misc
+    test/misc/testInterpolation.cpp
+    test/misc/testLinearAlgebra.cpp
+    test/misc/testLogging.cpp
+    test/misc/testLoadData.cpp
+    test/misc/testLookup.cpp
+  )
+  target_link_libraries(${PROJECT_NAME}_test_misc
+    ${PROJECT_NAME}
+    ${Boost_LIBRARIES}
+    gtest_main
+  )
+
+  ament_add_gtest(test_dynamics
+    test/dynamics/testSystemDynamicsLinearizer.cpp
+    test/dynamics/testSystemDynamicsPreComputation.cpp
+  )
+  target_link_libraries(test_dynamics
+    ${PROJECT_NAME}
+    gtest_main
+  )
+
+  ament_add_gtest(test_cost
+    test/cost/testCostCollection.cpp
+    test/cost/testCostCppAd.cpp
+    test/cost/testQuadraticCostFunction.cpp
+  )
+  target_link_libraries(test_cost
+    ${PROJECT_NAME}
+    ${Boost_LIBRARIES}
+    gtest_main
+  )
+
+  ament_add_gtest(test_constraint
+    test/constraint/testConstraintCollection.cpp
+    test/constraint/testConstraintCppAd.cpp
+    test/constraint/testLinearConstraint.cpp
+  )
+  target_link_libraries(test_constraint
+    ${PROJECT_NAME}
+    ${Boost_LIBRARIES}
+    gtest_main
+  )
+
+  ament_add_gtest(test_metrics
+    test/model_data/testMetrics.cpp
+  )
+  target_link_libraries(test_metrics
+    ${PROJECT_NAME}
+    gtest_main
+  )
+
+  ament_add_gtest(test_multiplier
+    test/model_data/testMultiplier.cpp
+  )
+  target_link_libraries(test_multiplier
+    ${PROJECT_NAME}
+    gtest_main
+  )
+
+  ament_add_gtest(test_ModelData
+    test/model_data/testModelData.cpp
+  )
+  target_link_libraries(test_ModelData
+    ${PROJECT_NAME}
+    gtest_main
+  )
+
+  ament_add_gtest(test_ModeSchedule
+    test/reference/testModeSchedule.cpp
+  )
+  target_link_libraries(test_ModeSchedule
+    ${PROJECT_NAME}
+    gtest_main
+  )
+
+  ament_add_gtest(test_softConstraint
+    test/soft_constraint/testSoftConstraint.cpp
+    test/soft_constraint/testDoubleSidedPenalty.cpp
+  )
+  target_link_libraries(test_softConstraint
+    ${PROJECT_NAME}
+    ${Boost_LIBRARIES}
+    gtest_main
+  )
+
+  ament_add_gtest(${PROJECT_NAME}_test_thread_support
+    test/thread_support/testBufferedValue.cpp
+    test/thread_support/testSynchronized.cpp
+    test/thread_support/testThreadPool.cpp
+  )
+  target_link_libraries(${PROJECT_NAME}_test_thread_support
+    ${PROJECT_NAME}
+    ${Boost_LIBRARIES}
+    gtest_main
+  )
+
+  ament_add_gtest(${PROJECT_NAME}_test_core
+    test/testPrecomputation.cpp
+    test/testTypes.cpp
+    )
+  target_link_libraries(${PROJECT_NAME}_test_core
+    ${PROJECT_NAME}
+    ${Boost_LIBRARIES}
+    gtest_main
+  )
 endif()
 
 ###################################
@@ -377,7 +379,7 @@ OpenMP_CXX
 Threads)
 
 ament_export_include_directories(include
-  test/include
+  # test/include
   ${EIGEN3_INCLUDE_DIRS})
 
 ament_export_libraries(${PROJECT_NAME})

@@ -23,4 +23,7 @@
   <depend>ocs2_python_interface</depend>
   <depend>ocs2_robotic_tools</depend>
 
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
 </package>

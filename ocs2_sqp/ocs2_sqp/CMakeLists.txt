@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.8)
 project(ocs2_sqp)
 
 set(AMENT_PACKAGE_DEPENDENCIES
+  ament_cmake
   ocs2_core
   ocs2_mpc
   ocs2_oc
@@ -10,9 +11,9 @@ set(AMENT_PACKAGE_DEPENDENCIES
   hpipm_catkin
 )
 
-find_package(ament_cmake REQUIRED COMPONENTS
-  ${AMENT_PACKAGE_DEPENDENCIES}
-)
+foreach(Dependency IN ITEMS ${AMENT_PACKAGE_DEPENDENCIES})
+  find_package(${Dependency} REQUIRED)
+endforeach()
 
 find_package(Boost REQUIRED COMPONENTS
   system
@@ -36,7 +37,9 @@ add_library(${PROJECT_NAME}
   src/SqpSettings.cpp
   src/SqpSolver.cpp
 )
-add_dependencies(${PROJECT_NAME}
+# add_dependencies(${PROJECT_NAME})
+ament_target_dependencies(${PROJECT_NAME}
+  ${AMENT_PACKAGE_DEPENDENCIES}
 )
 target_link_libraries(${PROJECT_NAME}
   ${Boost_LIBRARIES}

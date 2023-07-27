@@ -16,4 +16,7 @@
   <depend>ocs2_core</depend>
   <!-- <depend>ocs2_qp_solver</depend> -->
 
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
 </package>

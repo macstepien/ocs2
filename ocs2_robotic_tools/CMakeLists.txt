@@ -4,10 +4,9 @@ project(ocs2_robotic_tools)
 # Generate compile_commands.json for clang tools
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-find_package(ament_cmake REQUIRED COMPONENTS
-  ocs2_core
-  ocs2_oc
-)
+find_package(ament_cmake REQUIRED)
+find_package(ocs2_oc REQUIRED)
+find_package(ocs2_core REQUIRED)
 
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 
@@ -18,6 +17,8 @@ find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 include_directories(
   include
   ${EIGEN3_INCLUDE_DIRS}
+  ${ocs2_core_INCLUDE_DIRS}
+  ${ocs2_oc_INCLUDE_DIRS}
 )
 
 add_library(${PROJECT_NAME}

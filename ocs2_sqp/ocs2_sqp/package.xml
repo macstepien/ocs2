@@ -16,4 +16,7 @@
   <depend>blasfeo_catkin</depend>
   <depend>hpipm_catkin</depend>
 
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
 </package>

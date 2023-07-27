@@ -22,4 +22,7 @@
   <depend>ocs2_self_collision</depend>
   <depend>pinocchio</depend>
 
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
 </package>

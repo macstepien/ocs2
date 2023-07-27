@@ -1,10 +1,8 @@
 cmake_minimum_required(VERSION 3.8)
 project (ocs2_frank_wolfe)
 
-find_package(ament_cmake REQUIRED COMPONENTS
-  cmake_modules
-  ocs2_core
-)
+find_package(ament_cmake REQUIRED)
+find_package(ocs2_core REQUIRED)
 
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 

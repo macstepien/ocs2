@@ -25,4 +25,7 @@
   <depend>ocs2_robotic_tools</depend>
   <depend>ocs2_robotic_assets</depend>
 
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
 </package>

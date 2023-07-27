@@ -1,19 +1,24 @@
 cmake_minimum_required(VERSION 3.14)
 project(hpipm_catkin)
 
-find_package(ament_cmake REQUIRED COMPONENTS
+set(AMENT_PACKAGE_DEPENDENCIES
+  ament_cmake
   blasfeo_catkin
   ocs2_core
   ocs2_oc
   ocs2_qp_solver
 )
 
+foreach(Dependency IN ITEMS ${AMENT_PACKAGE_DEPENDENCIES})
+  find_package(${Dependency} REQUIRED)
+endforeach()
+
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 
 include(FetchContent)
 
 # Define directories
-set(HPIPM_DEVEL_PREFIX CACHE STRING "HPIPM install path")
+set(HPIPM_DEVEL_PREFIX share CACHE STRING "HPIPM install path")
 set(HPIPM_INCLUDE_DIR ${HPIPM_DEVEL_PREFIX}/include)
 set(HPIPM_LIB_DIR ${HPIPM_DEVEL_PREFIX}/lib)
 set(HPIPM_DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download)
@@ -25,7 +30,7 @@ file(MAKE_DIRECTORY ${HPIPM_LIB_DIR})
 file(MAKE_DIRECTORY ${HPIPM_DOWNLOAD_DIR})
 file(MAKE_DIRECTORY ${HPIPM_BUILD_DIR})
 
-message(STATUS "BLASFEO_PATH: " ${BLASFEO_PATH})
+message(WARNING "BLASFEO_PATH: " ${BLASFEO_PATH})
 
 # HPIPM Settings
 set(BLASFEO_PATH ${BLASFEO_PATH} CACHE STRING "BLASFEO installation path" FORCE)
@@ -67,7 +72,10 @@ add_library(${PROJECT_NAME}
   src/HpipmInterface.cpp
   src/HpipmInterfaceSettings.cpp
 )
-add_dependencies(${PROJECT_NAME}
+# add_dependencies(${PROJECT_NAME}
+# )
+ament_target_dependencies(${PROJECT_NAME}
+  ${AMENT_PACKAGE_DEPENDENCIES}
 )
 target_link_libraries(${PROJECT_NAME}
   hpipm
@@ -116,6 +124,7 @@ target_link_libraries(test_${PROJECT_NAME}
   ${PROJECT_NAME}
   hpipm
   gtest_main
+)
 endif()
 
 ###################################

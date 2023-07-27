@@ -16,4 +16,7 @@
   <depend>hpipm_catkin</depend>
   <test_depend>ocs2_qp_solver</test_depend>
 
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
 </package>

@@ -3,14 +3,15 @@ project(ocs2_mpcnet_core)
 
 set(AMENT_PACKAGE_DEPENDENCIES
   # pybind11_catkin
+  ament_cmake
   ocs2_mpc
   ocs2_python_interface
   ocs2_ros_interfaces
 )
 
-find_package(ament_cmake REQUIRED COMPONENTS
-  ${AMENT_PACKAGE_DEPENDENCIES}
-)
+foreach(Dependency IN ITEMS ${AMENT_PACKAGE_DEPENDENCIES})
+  find_package(${Dependency} REQUIRED)
+endforeach()
 
 find_package(onnxruntime REQUIRED)
 

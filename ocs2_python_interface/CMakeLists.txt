@@ -2,15 +2,15 @@ cmake_minimum_required(VERSION 3.8)
 project(ocs2_python_interface)
 
 set(AMENT_PACKAGE_DEPENDENCIES
+  ament_cmake
   ocs2_mpc
   ocs2_ddp
   ocs2_robotic_tools
 )
 
-find_package(ament_cmake REQUIRED COMPONENTS
-  cmake_modules
-  ${AMENT_PACKAGE_DEPENDENCIES}
-)
+foreach(Dependency IN ITEMS ${AMENT_PACKAGE_DEPENDENCIES})
+  find_package(${Dependency} REQUIRED)
+endforeach()
 
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 

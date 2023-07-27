@@ -2,15 +2,16 @@ cmake_minimum_required(VERSION 3.8)
 project(ocs2_legged_robot_mpcnet)
 
 set(AMENT_PACKAGE_DEPENDENCIES
+  ament_cmake
   ocs2_legged_robot
   ocs2_legged_robot_raisim
   ocs2_legged_robot_ros
   ocs2_mpcnet_core
 )
 
-find_package(ament_cmake REQUIRED COMPONENTS
-  ${AMENT_PACKAGE_DEPENDENCIES}
-)
+foreach(Dependency IN ITEMS ${AMENT_PACKAGE_DEPENDENCIES})
+  find_package(${Dependency} REQUIRED)
+endforeach()
 
 # Generate compile_commands.json for clang tools
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)

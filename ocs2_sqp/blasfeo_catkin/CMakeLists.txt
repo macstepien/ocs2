@@ -6,7 +6,7 @@ find_package(ament_cmake REQUIRED)
 include(FetchContent)
 
 # Define directories
-set(BLASFEO_DEVEL_PREFIX share CACHE STRING "Blasfeo install path")
+set(BLASFEO_DEVEL_PREFIX /home/pendulum/blasfeo_ocs2/ CACHE STRING "Blasfeo install path")
 set(BLASFEO_INCLUDE_DIR ${BLASFEO_DEVEL_PREFIX}/include)
 set(BLASFEO_LIB_DIR ${BLASFEO_DEVEL_PREFIX}/lib)
 set(BLASFEO_DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download)

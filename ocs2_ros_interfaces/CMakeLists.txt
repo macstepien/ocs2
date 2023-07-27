@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.8)
 project(ocs2_ros_interfaces)
 
 set(AMENT_PACKAGE_DEPENDENCIES
+  ament_cmake
   roscpp
   ocs2_msgs
   ocs2_core
@@ -12,10 +13,9 @@ set(AMENT_PACKAGE_DEPENDENCIES
   interactive_markers
 )
 
-find_package(ament_cmake REQUIRED COMPONENTS
-  cmake_modules
-  ${AMENT_PACKAGE_DEPENDENCIES}
-)
+foreach(Dependency IN ITEMS ${AMENT_PACKAGE_DEPENDENCIES})
+  find_package(${Dependency} REQUIRED)
+endforeach()
 
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 

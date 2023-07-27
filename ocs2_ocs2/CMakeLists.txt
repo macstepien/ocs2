@@ -1,8 +1,7 @@
 cmake_minimum_required(VERSION 3.8)
 project(ocs2_ocs2)
 
-find_package(ament_cmake REQUIRED COMPONENTS
-  cmake_modules
+find_package(ament_cmake REQUIRED
   ocs2_core
   ocs2_ddp
   ocs2_frank_wolfe

@@ -2,15 +2,16 @@ cmake_minimum_required(VERSION 3.8)
 project(ocs2_slp)
 
 set(AMENT_PACKAGE_DEPENDENCIES
+  ament_cmake
   ocs2_core
   ocs2_mpc
   ocs2_oc
   ocs2_qp_solver
 )
 
-find_package(ament_cmake REQUIRED COMPONENTS
-  ${AMENT_PACKAGE_DEPENDENCIES}
-)
+foreach(Dependency IN ITEMS ${AMENT_PACKAGE_DEPENDENCIES})
+  find_package(${Dependency} REQUIRED)
+endforeach()
 
 find_package(Boost REQUIRED COMPONENTS
   system
@@ -36,7 +37,10 @@ add_library(${PROJECT_NAME}
   src/SlpSettings.cpp
   src/SlpSolver.cpp
 )
-add_dependencies(${PROJECT_NAME}
+# add_dependencies(${PROJECT_NAME}
+# )
+ament_target_dependencies(${PROJECT_NAME}
+  ${AMENT_PACKAGE_DEPENDENCIES}
 )
 target_link_libraries(${PROJECT_NAME}
   ${Boost_LIBRARIES}
@@ -45,6 +49,9 @@ target_compile_options(${PROJECT_NAME} PUBLIC ${OCS2_CXX_FLAGS})
 
 add_executable(${PROJECT_NAME}_lintTarget
   src/lintTarget.cpp
+)
+ament_target_dependencies(${PROJECT_NAME}_lintTarget
+  ${AMENT_PACKAGE_DEPENDENCIES}
 )
 
 #########################

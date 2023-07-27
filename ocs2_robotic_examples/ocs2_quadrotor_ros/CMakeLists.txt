@@ -5,18 +5,19 @@ project(ocs2_quadrotor_ros)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(AMENT_PACKAGE_DEPENDENCIES
+  ament_cmake
   tf
   ocs2_mpc
   ocs2_ros_interfaces
   ocs2_robotic_tools
   ocs2_robotic_assets
   ocs2_quadrotor
+  roslib
 )
 
-find_package(ament_cmake REQUIRED COMPONENTS
-  roslib
-  ${AMENT_PACKAGE_DEPENDENCIES}
-)
+foreach(Dependency IN ITEMS ${AMENT_PACKAGE_DEPENDENCIES})
+  find_package(${Dependency} REQUIRED)
+endforeach()
 
 find_package(Boost REQUIRED COMPONENTS
   system

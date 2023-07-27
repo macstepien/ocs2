@@ -1,11 +1,10 @@
 cmake_minimum_required(VERSION 3.8)
 project(ocs2_qp_solver)
 
-find_package(ament_cmake REQUIRED COMPONENTS
-  ocs2_core
-  ocs2_oc
-)
-
+find_package(ament_cmake REQUIRED)
+find_package(ocs2_core REQUIRED)
+find_package(ocs2_oc REQUIRED)
+  
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 
 # Generate compile_commands.json for clang tools
@@ -15,6 +14,8 @@ include_directories(
   include
   test/include
   ${EIGEN3_INCLUDE_DIRS}
+  ${ocs2_core_INCLUDE_DIRS}
+  ${ocs2_oc_INCLUDE_DIRS}
 )
 
 # Declare a C++ library

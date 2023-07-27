@@ -5,6 +5,7 @@ project(ocs2_ballbot_ros)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(AMENT_PACKAGE_DEPENDENCIES
+  ament_cmake
   tf
   urdf
   kdl_parser
@@ -19,12 +20,12 @@ set(AMENT_PACKAGE_DEPENDENCIES
   ocs2_robotic_tools
   ocs2_ballbot
   ocs2_robotic_assets
+  roslib
 )
 
-find_package(ament_cmake REQUIRED COMPONENTS
-  roslib
-  ${AMENT_PACKAGE_DEPENDENCIES}
-)
+foreach(Dependency IN ITEMS ${AMENT_PACKAGE_DEPENDENCIES})
+  find_package(${Dependency} REQUIRED)
+endforeach()
 
 find_package(Boost REQUIRED COMPONENTS
   system
