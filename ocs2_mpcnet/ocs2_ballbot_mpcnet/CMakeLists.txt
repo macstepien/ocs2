@@ -1,32 +1,18 @@
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 3.8)
 project(ocs2_ballbot_mpcnet)
 
-set(CATKIN_PACKAGE_DEPENDENCIES
+set(AMENT_PACKAGE_DEPENDENCIES
   ocs2_ballbot
   ocs2_ballbot_ros
   ocs2_mpcnet_core
 )
 
-find_package(catkin REQUIRED COMPONENTS
-  ${CATKIN_PACKAGE_DEPENDENCIES}
+find_package(ament_cmake REQUIRED COMPONENTS
+  ${AMENT_PACKAGE_DEPENDENCIES}
 )
 
 # Generate compile_commands.json for clang tools
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
-###################################
-## catkin specific configuration ##
-###################################
-
-catkin_package(
-  INCLUDE_DIRS
-    include
-  LIBRARIES
-    ${PROJECT_NAME}
-  CATKIN_DEPENDS
-    ${CATKIN_PACKAGE_DEPENDENCIES}
-  DEPENDS
-)
 
 ###########
 ## Build ##
@@ -34,7 +20,6 @@ catkin_package(
 
 include_directories(
   include
-  ${catkin_INCLUDE_DIRS}
 )
 
 # main library
@@ -43,27 +28,21 @@ add_library(${PROJECT_NAME}
   src/BallbotMpcnetInterface.cpp
 )
 add_dependencies(${PROJECT_NAME}
-  ${catkin_EXPORTED_TARGETS}
 )
-target_link_libraries(${PROJECT_NAME}
-  ${catkin_LIBRARIES}
-)
+target_link_libraries(${PROJECT_NAME})
 
 # python bindings
-pybind11_add_module(BallbotMpcnetPybindings SHARED
-  src/BallbotMpcnetPybindings.cpp
-)
-add_dependencies(BallbotMpcnetPybindings
-  ${PROJECT_NAME}
-  ${catkin_EXPORTED_TARGETS}
-)
-target_link_libraries(BallbotMpcnetPybindings PRIVATE
-  ${PROJECT_NAME}
-  ${catkin_LIBRARIES}
-)
-set_target_properties(BallbotMpcnetPybindings
-    PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_PYTHON_DESTINATION}
-)
+# pybind11_add_module(BallbotMpcnetPybindings SHARED
+#   src/BallbotMpcnetPybindings.cpp
+# )
+# add_dependencies(BallbotMpcnetPybindings
+#   ${PROJECT_NAME}
+# )
+# target_link_libraries(BallbotMpcnetPybindings PRIVATE
+#   ${PROJECT_NAME})
+# set_target_properties(BallbotMpcnetPybindings
+#     PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_PYTHON_DESTINATION}
+# )
 
 # MPC-Net dummy node
 add_executable(ballbot_mpcnet_dummy
@@ -71,15 +50,10 @@ add_executable(ballbot_mpcnet_dummy
 )
 add_dependencies(ballbot_mpcnet_dummy
   ${PROJECT_NAME}
-  ${catkin_EXPORTED_TARGETS}
 )
 target_link_libraries(ballbot_mpcnet_dummy
-  ${PROJECT_NAME}
-  ${catkin_LIBRARIES}
-)
+  ${PROJECT_NAME})
 target_compile_options(ballbot_mpcnet_dummy PRIVATE ${OCS2_CXX_FLAGS})
-
-catkin_python_setup()
 
 #########################
 ###   CLANG TOOLING   ###
@@ -100,25 +74,25 @@ endif(cmake_clang_tools_FOUND)
 #############
 
 install(TARGETS ${PROJECT_NAME}
-        ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-        LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-        RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+        ARCHIVE DESTINATION lib
+        LIBRARY DESTINATION lib
+        RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
 
 install(DIRECTORY include/${PROJECT_NAME}/
-        DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION})
+        DESTINATION include/${PROJECT_NAME})
 
-install(TARGETS BallbotMpcnetPybindings
-        ARCHIVE DESTINATION ${CATKIN_PACKAGE_PYTHON_DESTINATION}
-        LIBRARY DESTINATION ${CATKIN_PACKAGE_PYTHON_DESTINATION}
-)
+# install(TARGETS BallbotMpcnetPybindings
+#         ARCHIVE DESTINATION ${CATKIN_PACKAGE_PYTHON_DESTINATION}
+#         LIBRARY DESTINATION ${CATKIN_PACKAGE_PYTHON_DESTINATION}
+# )
 
 install(TARGETS ballbot_mpcnet_dummy
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+  RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
 
 install(DIRECTORY launch policy
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+  DESTINATION share/${PROJECT_NAME}
 )
 
 #############
@@ -126,3 +100,15 @@ install(DIRECTORY launch policy
 #############
 
 # TODO(areske)
+
+###################################
+## ament specific configuration ##
+###################################
+
+ament_export_dependencies()
+
+ament_export_include_directories(include)
+
+ament_export_libraries(${PROJECT_NAME})
+
+ament_package()

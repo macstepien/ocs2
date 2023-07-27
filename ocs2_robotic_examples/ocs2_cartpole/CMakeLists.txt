@@ -1,18 +1,18 @@
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 3.8)
 project(ocs2_cartpole)
 
 # Generate compile_commands.json for clang tools
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(CATKIN_PACKAGE_DEPENDENCIES
+set(AMENT_PACKAGE_DEPENDENCIES
   ocs2_core
   ocs2_ddp
   ocs2_mpc
   ocs2_robotic_tools
 )
 
-find_package(catkin REQUIRED COMPONENTS
-  ${CATKIN_PACKAGE_DEPENDENCIES}
+find_package(ament_cmake REQUIRED COMPONENTS
+  ${AMENT_PACKAGE_DEPENDENCIES}
 )
 
 find_package(Boost REQUIRED COMPONENTS
@@ -21,22 +21,6 @@ find_package(Boost REQUIRED COMPONENTS
 )
 
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
-
-###################################
-## catkin specific configuration ##
-###################################
-
-catkin_package(
-  INCLUDE_DIRS
-    include
-    ${EIGEN3_INCLUDE_DIRS}
-  LIBRARIES
-    ${PROJECT_NAME}
-  CATKIN_DEPENDS
-    ${CATKIN_PACKAGE_DEPENDENCIES}
-  DEPENDS
-    Boost
-)
 
 ###########
 ## Build ##
@@ -53,7 +37,6 @@ include_directories(
   include
   ${EIGEN3_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIRS}
-  ${catkin_INCLUDE_DIRS}
 )
 
 # cartpole interface library
@@ -61,10 +44,8 @@ add_library(${PROJECT_NAME}
   src/CartPoleInterface.cpp
 )
 add_dependencies(${PROJECT_NAME}
-  ${catkin_EXPORTED_TARGETS}
 )
 target_link_libraries(${PROJECT_NAME}
-  ${catkin_LIBRARIES}
   ${Boost_LIBRARIES}
   dl
 )
@@ -91,30 +72,26 @@ endif(cmake_clang_tools_FOUND)
 #############
 
 install(TARGETS ${PROJECT_NAME}
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
 
 install(DIRECTORY include/${PROJECT_NAME}/
-  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+  DESTINATION include/${PROJECT_NAME}
 )
 
 install(DIRECTORY config
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+  DESTINATION share/${PROJECT_NAME}
 )
 
 #############
 ## Testing ##
 #############
-## Info ==============================
-## to run tests, cd package folder and run
-## $ catkin build -DCMAKE_BUILD_TYPE=RelWithDebInfo --this
-## $ catkin run_tests --no-deps --this
-## to see the summary of unit test results run
-## $ catkin_test_results ../../../build/ocs2_cartpole
 
-catkin_add_gtest(test_cartpole
+if(BUILD_TESTING)
+find_package(ament_cmake_gtest REQUIRED)
+ament_add_gtest(test_cartpole
   test/testCartpole.cpp
 )
 target_include_directories(test_cartpole PRIVATE
@@ -123,6 +100,18 @@ target_include_directories(test_cartpole PRIVATE
 target_link_libraries(test_cartpole
   gtest_main
   ${PROJECT_NAME}
-  ${catkin_LIBRARIES}
   ${Boost_LIBRARIES}
 )
+endif()
+###################################
+## ament specific configuration ##
+###################################
+
+ament_export_dependencies(Boost)
+
+ament_export_include_directories(include
+  ${EIGEN3_INCLUDE_DIRS})
+
+ament_export_libraries(${PROJECT_NAME})
+
+ament_package()

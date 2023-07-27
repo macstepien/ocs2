@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 3.8)
 project(ocs2_msgs)
 
-find_package(catkin REQUIRED
+find_package(ament_cmake REQUIRED
   COMPONENTS
     std_msgs
     message_generation
@@ -32,8 +32,11 @@ generate_messages(
     std_msgs
 )
 
-catkin_package(
-  CATKIN_DEPENDS
-    std_msgs
-    message_runtime
-)
+###################################
+## ament specific configuration ##
+###################################
+
+ament_export_dependencies(std_msgs
+message_runtime)
+
+ament_package()

@@ -1,16 +1,16 @@
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 3.8)
 project(ocs2_raisim_core)
 
 # Generate compile_commands.json for clang tools
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(CATKIN_PACKAGE_DEPENDENCIES
+set(AMENT_PACKAGE_DEPENDENCIES
   ocs2_core
   ocs2_oc
 )
 
-find_package(catkin REQUIRED COMPONENTS
-    ${CATKIN_PACKAGE_DEPENDENCIES}
+find_package(ament_cmake REQUIRED COMPONENTS
+    ${AMENT_PACKAGE_DEPENDENCIES}
 )
 
 find_package(Boost REQUIRED COMPONENTS
@@ -22,22 +22,6 @@ find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 
 find_package(raisim REQUIRED)
 
-###################################
-## catkin specific configuration ##
-###################################
-catkin_package(
-  INCLUDE_DIRS
-    include
-    ${raisim_INCLUDE_DIRS}
-  LIBRARIES
-    ${PROJECT_NAME}
-  CATKIN_DEPENDS
-    ${CATKIN_PACKAGE_DEPENDENCIES}
-  DEPENDS
-    Boost
-    raisim
-)
-
 
 ###########
 ## Build ##
@@ -45,7 +29,6 @@ catkin_package(
 include_directories(
   include
   ${EIGEN3_INCLUDE_DIRS}
-  ${catkin_INCLUDE_DIRS}
   ${raisim_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIRS}
 )
@@ -54,7 +37,6 @@ add_library(${PROJECT_NAME}
   src/RaisimRollout.cpp
 )
 target_link_libraries(${PROJECT_NAME}
-  ${catkin_LIBRARIES}
   ${Boost_LIBRARIES}
 )
 target_compile_options(${PROJECT_NAME} PUBLIC ${OCS2_CXX_FLAGS})
@@ -64,7 +46,6 @@ add_executable(${PROJECT_NAME}_lintTarget
   src/lintTarget.cpp
 )
 target_link_libraries(${PROJECT_NAME}_lintTarget
-    ${catkin_LIBRARIES}
     raisim::raisim
 )
 
@@ -88,11 +69,25 @@ endif(cmake_clang_tools_FOUND)
 #############
 
 install(TARGETS ${PROJECT_NAME}
-        ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-        LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-        RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+        ARCHIVE DESTINATION lib
+        LIBRARY DESTINATION lib
+        RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
 
 install(DIRECTORY include/${PROJECT_NAME}/
-  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+  DESTINATION include/${PROJECT_NAME}
 )
+
+###################################
+## ament specific configuration ##
+###################################
+
+ament_export_dependencies(Boost
+raisim)
+
+ament_export_include_directories(include
+  ${raisim_INCLUDE_DIRS})
+
+ament_export_libraries(${PROJECT_NAME})
+
+ament_package()

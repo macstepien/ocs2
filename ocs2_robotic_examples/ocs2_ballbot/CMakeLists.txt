@@ -1,11 +1,11 @@
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 3.8)
 project(ocs2_ballbot)
 
 # Generate compile_commands.json for clang tools
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(CATKIN_PACKAGE_DEPENDENCIES
-  pybind11_catkin
+set(AMENT_PACKAGE_DEPENDENCIES
+  # pybind11_catkin
   ocs2_core
   ocs2_mpc
   ocs2_ddp
@@ -15,8 +15,8 @@ set(CATKIN_PACKAGE_DEPENDENCIES
   ocs2_python_interface
 )
 
-find_package(catkin REQUIRED COMPONENTS
-  ${CATKIN_PACKAGE_DEPENDENCIES}
+find_package(ament_cmake REQUIRED COMPONENTS
+  ${AMENT_PACKAGE_DEPENDENCIES}
 )
 
 find_package(Boost REQUIRED COMPONENTS
@@ -25,22 +25,6 @@ find_package(Boost REQUIRED COMPONENTS
 )
 
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
-
-###################################
-## catkin specific configuration ##
-###################################
-
-catkin_package(
-  INCLUDE_DIRS
-    include
-    ${EIGEN3_INCLUDE_DIRS}
-  CATKIN_DEPENDS
-    ${CATKIN_PACKAGE_DEPENDENCIES}
-  LIBRARIES
-    ${PROJECT_NAME}
-  DEPENDS
-    Boost
-)
 
 ###########
 ## Build ##
@@ -57,7 +41,6 @@ include_directories(
   include
   ${EIGEN3_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIRS}
-  ${catkin_INCLUDE_DIRS}
 )
 
 # Ballbot interface library
@@ -66,10 +49,8 @@ add_library(${PROJECT_NAME}
   src/dynamics/BallbotSystemDynamics.cpp
 )
 add_dependencies(${PROJECT_NAME}
-  ${catkin_EXPORTED_TARGETS}
 )
 target_link_libraries(${PROJECT_NAME}
-  ${catkin_LIBRARIES}
   ${Boost_LIBRARIES}
   dl
 )
@@ -77,23 +58,17 @@ target_compile_options(${PROJECT_NAME} PUBLIC ${OCS2_CXX_FLAGS})
 
 
 # python bindings
-pybind11_add_module(BallbotPyBindings SHARED
-  src/pyBindModule.cpp
-)
-add_dependencies(BallbotPyBindings
-  ${PROJECT_NAME}
-  ${catkin_EXPORTED_TARGETS}
-)
-target_link_libraries(BallbotPyBindings PRIVATE
-  ${PROJECT_NAME}
-  ${catkin_LIBRARIES}
-)
-set_target_properties(BallbotPyBindings
-    PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_PYTHON_DESTINATION}
-)
-
-catkin_python_setup()
-
+# pybind11_add_module(BallbotPyBindings SHARED
+#   src/pyBindModule.cpp
+# )
+# add_dependencies(BallbotPyBindings
+#   ${PROJECT_NAME}
+# )
+# target_link_libraries(BallbotPyBindings PRIVATE
+#   ${PROJECT_NAME}
+# set_target_properties(BallbotPyBindings
+#     PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_PYTHON_DESTINATION}
+# )
 
 #########################
 ###   CLANG TOOLING   ###
@@ -115,29 +90,31 @@ endif(cmake_clang_tools_FOUND)
 #############
 
 install(TARGETS ${PROJECT_NAME}
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
 
 install(DIRECTORY include/${PROJECT_NAME}/
-  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+  DESTINATION include/${PROJECT_NAME}
 )
 
 install(DIRECTORY config
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+  DESTINATION share/${PROJECT_NAME}
 )
 
-install(TARGETS BallbotPyBindings
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_PYTHON_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_PYTHON_DESTINATION}
-)
+# install(TARGETS BallbotPyBindings
+#   ARCHIVE DESTINATION ${CATKIN_PACKAGE_PYTHON_DESTINATION}
+#   LIBRARY DESTINATION ${CATKIN_PACKAGE_PYTHON_DESTINATION}
+# )
 
 #############
 ## Testing ##
 #############
 
-catkin_add_gtest(test_BallbotPyBindings
+if(BUILD_TESTING)
+find_package(ament_cmake_gtest REQUIRED)
+ament_add_gtest(test_BallbotPyBindings
   test/testBallbotPyBindings.cpp
 )
 target_include_directories(test_BallbotPyBindings PRIVATE
@@ -145,9 +122,21 @@ target_include_directories(test_BallbotPyBindings PRIVATE
 )
 target_link_libraries(test_BallbotPyBindings
   ${PROJECT_NAME}
-  ${catkin_LIBRARIES}
   ${Boost_LIBRARIES}
 )
-
 # python tests
-catkin_add_nosetests(test)
+ament_add_nosetests(test)
+endif()
+
+###################################
+## ament specific configuration ##
+###################################
+
+ament_export_dependencies(Boost)
+
+ament_export_include_directories(include
+  ${EIGEN3_INCLUDE_DIRS})
+
+ament_export_libraries(${PROJECT_NAME})
+
+ament_package()

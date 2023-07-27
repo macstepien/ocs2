@@ -1,29 +1,17 @@
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 3.8)
 project(ocs2_raisim_ros)
 
 # Generate compile_commands.json for clang tools
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(CATKIN_PACKAGE_DEPENDENCIES
+set(AMENT_PACKAGE_DEPENDENCIES
   roscpp
   ocs2_raisim_core
   grid_map_msgs
 )
 
-find_package(catkin REQUIRED COMPONENTS
-    ${CATKIN_PACKAGE_DEPENDENCIES}
-)
-
-###################################
-## catkin specific configuration ##
-###################################
-catkin_package(
-  INCLUDE_DIRS
-    include
-  CATKIN_DEPENDS
-    ${CATKIN_PACKAGE_DEPENDENCIES}
-  LIBRARIES
-    ${PROJECT_NAME}
+find_package(ament_cmake REQUIRED COMPONENTS
+    ${AMENT_PACKAGE_DEPENDENCIES}
 )
 
 ###########
@@ -31,14 +19,12 @@ catkin_package(
 ###########
 include_directories(
   include
-  ${catkin_INCLUDE_DIRS}
 )
 
 add_library(${PROJECT_NAME}
   src/RaisimHeightmapRosConverter.cpp
 )
 target_link_libraries(${PROJECT_NAME}
-    ${catkin_LIBRARIES}
 )
 
 #######################
@@ -60,26 +46,37 @@ endif(cmake_clang_tools_FOUND)
 ## Install ##
 #############
 install(DIRECTORY include/${PROJECT_NAME}/
-  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+  DESTINATION include/${PROJECT_NAME}
 )
 
 install(TARGETS ${PROJECT_NAME}
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
 
 #############
 ## Testing ##
 #############
 
-if(CATKIN_ENABLE_TESTING)
-  catkin_add_gtest(test_${PROJECT_NAME}
+if(BUILD_TESTING)
+find_package(ament_cmake_gtest REQUIRED)
+  ament_add_gtest(test_${PROJECT_NAME}
     test/testRosConversion.cpp
   )
   target_link_libraries(test_${PROJECT_NAME}
     ${PROJECT_NAME}
-    ${catkin_LIBRARIES}
     gtest_main
   )
-endif(CATKIN_ENABLE_TESTING)
+endif()
+###################################
+## ament specific configuration ##
+###################################
+
+ament_export_dependencies()
+
+ament_export_include_directories(include)
+
+ament_export_libraries(${PROJECT_NAME})
+
+ament_package()

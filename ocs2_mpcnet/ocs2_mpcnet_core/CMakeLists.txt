@@ -1,15 +1,15 @@
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 3.8)
 project(ocs2_mpcnet_core)
 
-set(CATKIN_PACKAGE_DEPENDENCIES
-  pybind11_catkin
+set(AMENT_PACKAGE_DEPENDENCIES
+  # pybind11_catkin
   ocs2_mpc
   ocs2_python_interface
   ocs2_ros_interfaces
 )
 
-find_package(catkin REQUIRED COMPONENTS
-  ${CATKIN_PACKAGE_DEPENDENCIES}
+find_package(ament_cmake REQUIRED COMPONENTS
+  ${AMENT_PACKAGE_DEPENDENCIES}
 )
 
 find_package(onnxruntime REQUIRED)
@@ -17,28 +17,12 @@ find_package(onnxruntime REQUIRED)
 # Generate compile_commands.json for clang tools
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-###################################
-## catkin specific configuration ##
-###################################
-
-catkin_package(
-  INCLUDE_DIRS
-    include
-  LIBRARIES
-    ${PROJECT_NAME}
-  CATKIN_DEPENDS
-    ${CATKIN_PACKAGE_DEPENDENCIES}
-  DEPENDS
-    onnxruntime
-)
-
 ###########
 ## Build ##
 ###########
 
 include_directories(
   include
-  ${catkin_INCLUDE_DIRS}
 )
 
 # main library
@@ -54,30 +38,23 @@ add_library(${PROJECT_NAME}
   src/MpcnetInterfaceBase.cpp
 )
 add_dependencies(${PROJECT_NAME}
-  ${catkin_EXPORTED_TARGETS}
 )
 target_link_libraries(${PROJECT_NAME}
-  ${catkin_LIBRARIES}
   onnxruntime
 )
 
 # python bindings
-pybind11_add_module(MpcnetPybindings SHARED
-  src/MpcnetPybindings.cpp
-)
-add_dependencies(MpcnetPybindings
-  ${PROJECT_NAME}
-  ${catkin_EXPORTED_TARGETS}
-)
-target_link_libraries(MpcnetPybindings PRIVATE
-  ${PROJECT_NAME}
-  ${catkin_LIBRARIES}
-)
-set_target_properties(MpcnetPybindings
-    PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_PYTHON_DESTINATION}
-)
-
-catkin_python_setup()
+# pybind11_add_module(MpcnetPybindings SHARED
+#   src/MpcnetPybindings.cpp
+# )
+# add_dependencies(MpcnetPybindings
+#   ${PROJECT_NAME}
+# )
+# target_link_libraries(MpcnetPybindings PRIVATE
+#   ${PROJECT_NAME}
+# set_target_properties(MpcnetPybindings
+#     PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_PYTHON_DESTINATION}
+# )
 
 #########################
 ###   CLANG TOOLING   ###
@@ -98,21 +75,34 @@ endif(cmake_clang_tools_FOUND)
 #############
 
 install(TARGETS ${PROJECT_NAME}
-        ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-        LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-        RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+        ARCHIVE DESTINATION lib
+        LIBRARY DESTINATION lib
+        RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
 
 install(DIRECTORY include/${PROJECT_NAME}/
-        DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION})
+        DESTINATION include/${PROJECT_NAME})
 
-install(TARGETS MpcnetPybindings
-        ARCHIVE DESTINATION ${CATKIN_PACKAGE_PYTHON_DESTINATION}
-        LIBRARY DESTINATION ${CATKIN_PACKAGE_PYTHON_DESTINATION}
-)
+# install(TARGETS MpcnetPybindings
+#         ARCHIVE DESTINATION ${CATKIN_PACKAGE_PYTHON_DESTINATION}
+#         LIBRARY DESTINATION ${CATKIN_PACKAGE_PYTHON_DESTINATION}
+# )
 
 #############
 ## Testing ##
 #############
 
 # TODO(areske)
+
+
+###################################
+## ament specific configuration ##
+###################################
+
+ament_export_dependencies(onnxruntime)
+
+ament_export_include_directories(include)
+
+ament_export_libraries(${PROJECT_NAME})
+
+ament_package()

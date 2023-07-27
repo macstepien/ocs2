@@ -11,7 +11,7 @@
     <maintainer email="jcarius@ethz.ch">Jan Carius</maintainer>
     <maintainer email="rgrandia@ethz.ch">Ruben Grandia</maintainer>
 
-    <buildtool_depend>catkin</buildtool_depend>
+    <buildtool_depend>ament_cmake</buildtool_depend>
 
     <build_depend>message_generation</build_depend>
 
