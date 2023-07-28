@@ -34,7 +34,7 @@ include_directories(
   ${Boost_INCLUDE_DIRS}
 )
 
-add_library(${PROJECT_NAME}
+add_library(${PROJECT_NAME} SHARED
   src/riccati_equations/ContinuousTimeRiccatiEquations.cpp
   src/riccati_equations/DiscreteTimeRiccatiEquations.cpp
   src/riccati_equations/RiccatiModification.cpp
