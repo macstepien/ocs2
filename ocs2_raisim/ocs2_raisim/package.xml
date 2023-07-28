@@ -18,7 +18,7 @@
   <exec_depend>ocs2_legged_robot_raisim</exec_depend>
 
   <export>
-    <metapackage />
+    <build_type>ament_cmake</build_type>
   </export>
 
 </package>

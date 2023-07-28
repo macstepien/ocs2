@@ -29,7 +29,7 @@
   <depend>ocs2_mpcnet</depend>
 
   <export>
-    <metapackage />
+    <build_type>ament_cmake</build_type>
   </export>
 
 </package>
