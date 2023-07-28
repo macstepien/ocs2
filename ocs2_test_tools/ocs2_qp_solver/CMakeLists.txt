@@ -86,7 +86,7 @@ ament_export_dependencies(ocs2_core
 ocs2_oc)
 
 ament_export_include_directories(include
-  test/include
+  # test/include
   ${EIGEN3_INCLUDE_DIRS})
 
 ament_export_libraries(${PROJECT_NAME})
