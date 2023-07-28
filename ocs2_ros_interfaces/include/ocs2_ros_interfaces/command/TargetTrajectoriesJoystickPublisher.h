@@ -32,23 +32,22 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <functional>
 #include <memory>
 #include <mutex>
+#include <sensor_msgs/msg/joy.hpp>
 
-#include <interactive_markers/interactive_marker_server.hpp>
-#include <interactive_markers/menu_handler.hpp>
+#include <rclcpp/rclcpp.hpp>
 
 #include <ocs2_mpc/SystemObservation.h>
 #include <ocs2_ros_interfaces/command/TargetTrajectoriesRosPublisher.h>
-#include <ocs2_msgs/msg/mpc_observation.hpp>
 
 namespace ocs2 {
 
 /**
- * This class lets the user to command robot form interactive marker.
+ * This class lets the user to insert robot command form command line.
  */
-class TargetTrajectoriesInteractiveMarker final {
+class TargetTrajectoriesJoystickPublisher final {
  public:
-  using GaolPoseToTargetTrajectories = std::function<TargetTrajectories(
-      const Eigen::Vector3d& position, const Eigen::Quaterniond& orientation, const SystemObservation& observation)>;
+  using CommandLineToTargetTrajectories =
+      std::function<TargetTrajectories(const vector_t& commadLineTarget, const SystemObservation& observation)>;
 
   /**
    * Constructor
@@ -56,30 +55,34 @@ class TargetTrajectoriesInteractiveMarker final {
    * @param [in] nodeHandle: ROS node handle.
    * @param [in] topicPrefix: The TargetTrajectories will be published on "topicPrefix_mpc_target" topic. Moreover, the latest
    * observation is be expected on "topicPrefix_mpc_observation" topic.
-   * @param [in] gaolPoseToTargetTrajectories: A function which transforms the commanded pose to TargetTrajectories.
+   * @param [in] targetCommandLimits: The limits of the loaded command from command-line (for safety purposes).
+   * @param [in] commandLineToTargetTrajectoriesFun: A function which transforms the command line input to TargetTrajectories.
    */
-  TargetTrajectoriesInteractiveMarker(::rclcpp::Node::SharedPtr& node, const std::string& topicPrefix,
-                                      GaolPoseToTargetTrajectories gaolPoseToTargetTrajectories);
+  TargetTrajectoriesJoystickPublisher(::rclcpp::Node::SharedPtr& nodeHandle, const std::string& topicPrefix,
+                                      const scalar_array_t& targetCommandLimits,
+                                      CommandLineToTargetTrajectories commandLineToTargetTrajectoriesFun);
 
-  /**
-   * Spins ROS to update the interactive markers.
-   */
-  void publishInteractiveMarker() { ::rclcpp::spin(node_); }
+  /** Gets the command vector size. */
+  size_t targetCommandSize() const { return targetCommandLimits_.size(); }
+
+  void publishJoystickCommand();
 
  private:
-  visualization_msgs::msg::InteractiveMarker createInteractiveMarker() const;
-  void processFeedback(const visualization_msgs::msg::InteractiveMarkerFeedback::ConstSharedPtr feedback);
-
-  interactive_markers::MenuHandler menuHandler_;
-  interactive_markers::InteractiveMarkerServer server_;
-
-  GaolPoseToTargetTrajectories gaolPoseToTargetTrajectories_;
+  const vector_t targetCommandLimits_;
+  CommandLineToTargetTrajectories commandLineToTargetTrajectoriesFun_;
 
   std::unique_ptr<TargetTrajectoriesRosPublisher> targetTrajectoriesPublisherPtr_;
+
+  rclcpp::Subscription<sensor_msgs::msg::Joy>::SharedPtr joysubscription_;
+  Eigen::Vector4d command_;
+  std::mutex joymutex_;
+  void joyCallback(const sensor_msgs::msg::Joy::SharedPtr msg);
+  Eigen::Vector4d getLatestJoyCommand();
 
   ::rclcpp::Subscription<ocs2_msgs::msg::MPCObservation>::SharedPtr observationSubscriber_;
   mutable std::mutex latestObservationMutex_;
   SystemObservation latestObservation_;
+  bool observationReceived_;
   ::rclcpp::Node::SharedPtr node_;
 };
 

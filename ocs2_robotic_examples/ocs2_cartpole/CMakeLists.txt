@@ -12,8 +12,6 @@ set(AMENT_PACKAGE_DEPENDENCIES
   ocs2_robotic_tools
 )
 
-
-
 foreach(Dependency IN ITEMS ${AMENT_PACKAGE_DEPENDENCIES})
   find_package(${Dependency} REQUIRED)
 endforeach()
@@ -46,14 +44,16 @@ include_directories(
 add_library(${PROJECT_NAME}
   src/CartPoleInterface.cpp
 )
-add_dependencies(${PROJECT_NAME}
+# add_dependencies(${PROJECT_NAME}
+# )
+ament_target_dependencies(${PROJECT_NAME}
+  ${AMENT_PACKAGE_DEPENDENCIES}
 )
 target_link_libraries(${PROJECT_NAME}
   ${Boost_LIBRARIES}
   dl
 )
 target_compile_options(${PROJECT_NAME} PUBLIC ${OCS2_CXX_FLAGS})
-
 
 #########################
 ###   CLANG TOOLING   ###
@@ -110,7 +110,8 @@ endif()
 ## ament specific configuration ##
 ###################################
 
-ament_export_dependencies(Boost)
+ament_export_dependencies(${AMENT_PACKAGE_DEPENDENCIES}
+  Boost)
 
 ament_export_include_directories(include
   ${EIGEN3_INCLUDE_DIRS})

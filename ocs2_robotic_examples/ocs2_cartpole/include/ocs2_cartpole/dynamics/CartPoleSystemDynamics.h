@@ -45,7 +45,7 @@ class CartPoleSytemDynamics : public SystemDynamicsBaseAD {
  public:
   CartPoleSytemDynamics(const CartPoleParameters& cartPoleParameters, const std::string& libraryFolder, bool verbose)
       : param_(cartPoleParameters) {
-    initialize(STATE_DIM, INPUT_DIM, "cartpole_dynamics", libraryFolder, true, verbose);
+    initialize(STATE_DIM, INPUT_DIM, "cartpole_dynamics", libraryFolder, false, verbose);
   }
 
   ~CartPoleSytemDynamics() override = default;

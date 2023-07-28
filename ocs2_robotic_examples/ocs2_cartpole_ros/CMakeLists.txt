@@ -6,6 +6,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(AMENT_PACKAGE_DEPENDENCIES
   ament_cmake
+  rclcpp
   ocs2_core
   ocs2_ddp
   ocs2_mpc
@@ -13,8 +14,8 @@ set(AMENT_PACKAGE_DEPENDENCIES
   ocs2_robotic_tools
   ocs2_cartpole
   ocs2_robotic_assets
-  roslib
 )
+
 
 foreach(Dependency IN ITEMS ${AMENT_PACKAGE_DEPENDENCIES})
   find_package(${Dependency} REQUIRED)
@@ -41,20 +42,25 @@ include_directories(
 add_executable(cartpole_mpc
   src/CartpoleMpcNode.cpp
 )
-add_dependencies(cartpole_mpc
+# add_dependencies(cartpole_mpc
+# )
+ament_target_dependencies(cartpole_mpc rclcpp ocs2_cartpole ocs2_ros_interfaces ocs2_mpc ocs2_ddp
 )
-target_link_libraries(cartpole_mpc
-)
+# target_link_libraries(cartpole_mpc ${LIBS}
+# )
 
 # Dummy node
 add_executable(cartpole_dummy_test
   src/DummyCartpoleNode.cpp
   src/CartpoleDummyVisualization.cpp
 )
-add_dependencies(cartpole_dummy_test
+# add_dependencies(cartpole_dummy_test
+# )
+ament_target_dependencies(cartpole_dummy_test
+rclcpp ocs2_cartpole ocs2_ros_interfaces ocs2_mpc ocs2_ddp
 )
-target_link_libraries(cartpole_dummy_test
-)
+# target_link_libraries(cartpole_dummy_test ${LIBS}
+# )
 
 
 #########################
@@ -92,7 +98,7 @@ install(DIRECTORY launch rviz
 ## ament specific configuration ##
 ###################################
 
-ament_export_dependencies(Boost)
+ament_export_dependencies(Boost ${AMENT_PACKAGE_DEPENDENCIES})
 
 ament_export_include_directories(include
   ${EIGEN3_INCLUDE_DIRS})

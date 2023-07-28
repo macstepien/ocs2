@@ -1,11 +1,36 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.10.2)
 project(ocs2_ros_interfaces)
 
-set(AMENT_PACKAGE_DEPENDENCIES
-  ament_cmake
-  roscpp
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(ocs2_msgs REQUIRED)
+find_package(ocs2_core REQUIRED)
+find_package(ocs2_ddp REQUIRED)
+find_package(ocs2_oc REQUIRED)
+find_package(ocs2_mpc REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(visualization_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(interactive_markers REQUIRED)
+find_package(OpenMP REQUIRED)
+
+find_package(Eigen3 3.3 REQUIRED NO_MODULE)
+
+find_package(Boost REQUIRED COMPONENTS
+  system
+  filesystem
+)
+
+###########
+## Build ##
+###########
+
+set(DEPS
+  rclcpp
   ocs2_msgs
   ocs2_core
+  ocs2_ddp
+  ocs2_oc
   ocs2_mpc
   std_msgs
   visualization_msgs
@@ -13,32 +38,11 @@ set(AMENT_PACKAGE_DEPENDENCIES
   interactive_markers
 )
 
-foreach(Dependency IN ITEMS ${AMENT_PACKAGE_DEPENDENCIES})
-  find_package(${Dependency} REQUIRED)
-endforeach()
-
-find_package(Eigen3 3.3 REQUIRED NO_MODULE)
-
-find_package(Boost REQUIRED COMPONENTS filesystem)
-
-# Generate compile_commands.json for clang tools
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
-###########
-## Build ##
-###########
-
-## Specify additional locations of header files
-include_directories(
-  include
-  ${EIGEN3_INCLUDE_DIRS}
-  ${Boost_INCLUDE_DIRS}
-)
-
 add_library(${PROJECT_NAME}
   src/command/TargetTrajectoriesRosPublisher.cpp
   src/command/TargetTrajectoriesInteractiveMarker.cpp
   src/command/TargetTrajectoriesKeyboardPublisher.cpp
+  src/command/TargetTrajectoriesJoystickPublisher.cpp
   src/common/RosMsgConversions.cpp
   src/common/RosMsgHelpers.cpp
   src/mpc/MPC_ROS_Interface.cpp
@@ -50,34 +54,52 @@ add_library(${PROJECT_NAME}
   src/visualization/VisualizationHelpers.cpp
   src/visualization/VisualizationColors.cpp
 )
-target_link_libraries(${PROJECT_NAME})
 target_compile_options(${PROJECT_NAME} PUBLIC ${OCS2_CXX_FLAGS})
 
-add_executable(test_custom_callback_queue
-  test/test_custom_callback_queue.cpp
+target_include_directories(${PROJECT_NAME} PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
 )
-add_dependencies(test_custom_callback_queue
+
+target_link_libraries(${PROJECT_NAME}
+  ${Boost_LIBRARIES}
+  Eigen3::Eigen
 )
-target_link_libraries(test_custom_callback_queue
+
+ament_target_dependencies(${PROJECT_NAME}
+  ${DEPS}
 )
-target_compile_options(test_custom_callback_queue PRIVATE ${OCS2_CXX_FLAGS})
 
 # multiplot remap node
 add_executable(multiplot_remap
   src/multiplot/MultiplotRemap.cpp
 )
-add_dependencies(multiplot_remap
+
+target_include_directories(multiplot_remap PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
 )
+
+ament_target_dependencies(multiplot_remap
+  ${DEPS}
+)
+
 target_link_libraries(multiplot_remap
   ${PROJECT_NAME}
+)
 target_compile_options(multiplot_remap PRIVATE ${OCS2_CXX_FLAGS})
 
 add_executable(${PROJECT_NAME}_lintTarget
   src/lintTarget.cpp
 )
-add_dependencies(${PROJECT_NAME}_lintTarget
+
+target_include_directories(${PROJECT_NAME}_lintTarget PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
 )
-target_link_libraries(${PROJECT_NAME}_lintTarget
+
+ament_target_dependencies(${PROJECT_NAME}_lintTarget
+  ${DEPS}
 )
 
 #########################
@@ -99,34 +121,35 @@ endif(cmake_clang_tools_FOUND)
 #############
 
 install(TARGETS ${PROJECT_NAME}
-  ARCHIVE DESTINATION lib
-  LIBRARY DESTINATION lib
-  RUNTIME DESTINATION lib/${PROJECT_NAME}
+        EXPORT export_${PROJECT_NAME}
+        ARCHIVE DESTINATION lib
+        LIBRARY DESTINATION lib
+        RUNTIME DESTINATION bin
 )
 
-install(DIRECTORY include/${PROJECT_NAME}/
-  DESTINATION include/${PROJECT_NAME}
-)
-install(TARGETS multiplot_remap
-  RUNTIME DESTINATION lib/${PROJECT_NAME}
-)
-install(DIRECTORY launch multiplot
-  DESTINATION share/${PROJECT_NAME}
+install(DIRECTORY multiplot DESTINATION share/${PROJECT_NAME})
+install(DIRECTORY launch multiplot DESTINATION share/${PROJECT_NAME})
+
+install(DIRECTORY include/
+        DESTINATION include
 )
 
-#############
-## Testing ##
-#############
-
-###################################
-## ament specific configuration ##
-###################################
-
-ament_export_dependencies(Boost)
-
-ament_export_include_directories(include
-  ${EIGEN3_INCLUDE_DIRS})
+ament_export_include_directories(include)
 
 ament_export_libraries(${PROJECT_NAME})
+ament_export_targets(
+  export_${PROJECT_NAME}
+)
+
+ament_export_dependencies(rclcpp)
+ament_export_dependencies(ocs2_msgs)
+ament_export_dependencies(ocs2_core)
+ament_export_dependencies(ocs2_ddp)
+ament_export_dependencies(ocs2_oc)
+ament_export_dependencies(ocs2_mpc)
+ament_export_dependencies(std_msgs)
+ament_export_dependencies(visualization_msgs)
+ament_export_dependencies(geometry_msgs)
+ament_export_dependencies(interactive_markers)
 
 ament_package()

@@ -29,48 +29,50 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <memory>
 
-#include <ros/init.h>
-#include <ros/package.h>
+#include <filesystem>
+
+#include <rclcpp/rclcpp.hpp>
+#include <ament_index_cpp/get_package_share_directory.hpp>
 
 #include <ocs2_cartpole/CartPoleInterface.h>
 #include <ocs2_ddp/GaussNewtonDDP_MPC.h>
 #include <ocs2_ros_interfaces/mpc/MPC_ROS_Interface.h>
 #include <ocs2_ros_interfaces/synchronized_module/SolverObserverRosCallbacks.h>
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv)
+{
   const std::string robotName = "cartpole";
 
-  // task file
-  std::vector<std::string> programArgs{};
-  ::ros::removeROSArgs(argc, argv, programArgs);
-  if (programArgs.size() <= 1) {
-    throw std::runtime_error("No task file specified. Aborting.");
-  }
-  std::string taskFileFolderName(programArgs[1]);
-
   // Initialize ros node
-  ros::init(argc, argv, robotName + "_mpc");
-  ros::NodeHandle nodeHandle;
+  rclcpp::init(argc, argv);
+
+  rclcpp::Node::SharedPtr nodeHandle = std::make_shared<rclcpp::Node>("cartpole_mpc");
 
   // Robot interface
-  const std::string taskFile = ros::package::getPath("ocs2_cartpole") + "/config/" + taskFileFolderName + "/task.info";
-  const std::string libFolder = ros::package::getPath("ocs2_cartpole") + "/auto_generated";
-  ocs2::cartpole::CartPoleInterface cartPoleInterface(taskFile, libFolder, true /*verbose*/);
+  std::string taskFile =
+      std::filesystem::path(ament_index_cpp::get_package_share_directory("ocs2_cartpole")) /
+      "config" / "mpc" / "task.info";
+  std::string libraryFolder =
+      std::filesystem::path(ament_index_cpp::get_package_share_directory("ocs2_cartpole")) /
+      "auto_generated";
+  ocs2::cartpole::CartPoleInterface cartPoleInterface(taskFile, libraryFolder, true /*verbose*/);
 
   // MPC
   ocs2::GaussNewtonDDP_MPC mpc(cartPoleInterface.mpcSettings(), cartPoleInterface.ddpSettings(), cartPoleInterface.getRollout(),
                                cartPoleInterface.getOptimalControlProblem(), cartPoleInterface.getInitializer());
 
   // observer for the input limits constraints
-  auto createStateInputBoundsObserver = [&]() {
+  auto createStateInputBoundsObserver = [&]()
+  {
     const std::string observingLagrangianTerm = "InputLimits";
     const ocs2::scalar_array_t observingTimePoints{0.0, 0.5};
     std::vector<std::string> metricsTopicNames;
     std::vector<std::string> multiplierTopicNames;
-    for (const auto& t : observingTimePoints) {
+    for (const auto &t : observingTimePoints)
+    {
       const int timeMs = static_cast<int>(t * 1000.0);
-      metricsTopicNames.push_back("metrics/" + observingLagrangianTerm + "/" + std::to_string(timeMs) + "MsLookAhead");
-      multiplierTopicNames.push_back("multipliers/" + observingLagrangianTerm + "/" + std::to_string(timeMs) + "MsLookAhead");
+      metricsTopicNames.push_back("metrics/" + observingLagrangianTerm + "/t" + std::to_string(timeMs) + "MsLookAhead");
+      multiplierTopicNames.push_back("multipliers/" + observingLagrangianTerm + "/t" + std::to_string(timeMs) + "MsLookAhead");
     }
     auto lagrangianCallback = ocs2::ros::createLagrangianCallback(nodeHandle, observingTimePoints, metricsTopicNames,
                                                                   ocs2::ros::CallbackInterpolationStrategy::linear_interpolation);
@@ -83,6 +85,12 @@ int main(int argc, char** argv) {
 
   // Launch MPC ROS node
   ocs2::MPC_ROS_Interface mpcNode(mpc, robotName);
+
+  // initial command
+  ocs2::TargetTrajectories initTargetTrajectories({0.0}, {cartPoleInterface.getInitialTarget()},
+                                                  {ocs2::vector_t::Zero(ocs2::cartpole::INPUT_DIM)});
+
+  mpcNode.resetMpcNode(std::move(initTargetTrajectories));
   mpcNode.launchNodes(nodeHandle);
 
   return 0;

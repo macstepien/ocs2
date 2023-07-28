@@ -17,7 +17,6 @@
 
 // synchronized_module
 #include <ocs2_ros_interfaces/synchronized_module/RosReferenceManager.h>
-#include <ocs2_ros_interfaces/synchronized_module/SolverObserverRosCallbacks.h>
 
 // dummy target for clang toolchain
 int main() {

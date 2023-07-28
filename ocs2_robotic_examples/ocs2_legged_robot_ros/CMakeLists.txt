@@ -197,7 +197,7 @@ install(DIRECTORY launch rviz
 ## ament specific configuration ##
 ###################################
 
-ament_export_dependencies(Boost
+ament_export_dependencies(Boost ${AMENT_PACKAGE_DEPENDENCIES}
 pinocchio)
 
 ament_export_include_directories(include

@@ -103,7 +103,7 @@ endif()
 ## ament specific configuration ##
 ###################################
 
-ament_export_dependencies()
+ament_export_dependencies(${AMENT_PACKAGE_DEPENDENCIES})
 
 ament_export_include_directories(include)
 

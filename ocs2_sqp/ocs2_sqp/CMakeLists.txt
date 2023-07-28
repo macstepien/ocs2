@@ -97,7 +97,7 @@ endif()
 ## ament specific configuration ##
 ###################################
 
-ament_export_dependencies(
+ament_export_dependencies( ${AMENT_PACKAGE_DEPENDENCIES}
 Boost)
 
 ament_export_include_directories(include

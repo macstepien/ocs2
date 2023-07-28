@@ -147,7 +147,7 @@ endif()
 ## ament specific configuration ##
 ###################################
 
-ament_export_dependencies(Boost)
+ament_export_dependencies(Boost ${AMENT_PACKAGE_DEPENDENCIES})
 
 ament_export_include_directories(include
   ${EIGEN3_INCLUDE_DIRS})

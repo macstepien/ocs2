@@ -29,7 +29,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #pragma once
 
-#include <ros/ros.h>
+#include <rclcpp/rclcpp.hpp>
 
 #include <ocs2_oc/synchronized_module/SolverObserver.h>
 
@@ -51,7 +51,7 @@ enum class CallbackInterpolationStrategy {
  * @return A callback which can be set to SolverObserverModule in order to observe a requested term's constraint.
  */
 SolverObserver::constraint_callback_t createConstraintCallback(
-    ::ros::NodeHandle& nodeHandle, const scalar_array_t& observingTimePoints, const std::vector<std::string>& topicNames,
+    rclcpp::Node::SharedPtr& nodeHandle, const scalar_array_t& observingTimePoints, const std::vector<std::string>& topicNames,
     CallbackInterpolationStrategy interpolationStrategy = CallbackInterpolationStrategy::nearest_time);
 
 /**
@@ -65,7 +65,7 @@ SolverObserver::constraint_callback_t createConstraintCallback(
  * @return A callback which can be set to SolverObserverModule in order to observe a requested term's LagrangianMetrics.
  */
 SolverObserver::lagrangian_callback_t createLagrangianCallback(
-    ::ros::NodeHandle& nodeHandle, const scalar_array_t& observingTimePoints, const std::vector<std::string>& topicNames,
+    rclcpp::Node::SharedPtr& nodeHandle, const scalar_array_t& observingTimePoints, const std::vector<std::string>& topicNames,
     CallbackInterpolationStrategy interpolationStrategy = CallbackInterpolationStrategy::nearest_time);
 
 /**
@@ -79,7 +79,7 @@ SolverObserver::lagrangian_callback_t createLagrangianCallback(
  * @return A callback which can be set to SolverObserverModule in order to observe a requested term's multiplier.
  */
 SolverObserver::multiplier_callback_t createMultiplierCallback(
-    ::ros::NodeHandle& nodeHandle, const scalar_array_t& observingTimePoints, const std::vector<std::string>& topicNames,
+    rclcpp::Node::SharedPtr& nodeHandle, const scalar_array_t& observingTimePoints, const std::vector<std::string>& topicNames,
     CallbackInterpolationStrategy interpolationStrategy = CallbackInterpolationStrategy::nearest_time);
 
 }  // namespace ros

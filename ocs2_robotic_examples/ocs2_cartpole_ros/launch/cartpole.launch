@@ -1,20 +1,7 @@
 <launch>
-    <arg name="rviz"       default="true" />
-    <arg name="multiplot"  default="true"/>
-    <arg name="task_name"  default="mpc"/>
+  <include file="$(find-pkg-share ocs2_cartpole_ros)/launch/visualize.launch.py"/>
 
-    <group if="$(arg rviz)">
-      <include file="$(find ocs2_cartpole_ros)/launch/visualize.launch"/>
-    </group>
-
-    <group if="$(arg multiplot)">
-      <include file="$(find ocs2_cartpole_ros)/launch/multiplot.launch" />
-    </group>
-
-    <node pkg="ocs2_cartpole_ros" type="cartpole_mpc" name="cartpole_mpc"
-            output="screen" args="$(arg task_name)" launch-prefix=""/>
-
-    <node pkg="ocs2_cartpole_ros" type="cartpole_dummy_test" name="cartpole_dummy_test"
-            output="screen" args="$(arg task_name)" launch-prefix="gnome-terminal --"/>
+  <node pkg="ocs2_cartpole_ros" exec="cartpole_mpc" name="cartpole_mpc" />
+  <node pkg="ocs2_cartpole_ros" exec="cartpole_dummy_test" name="cartpole_dummy_test" />
 </launch>
 	

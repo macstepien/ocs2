@@ -33,9 +33,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <string>
 #include <utility>
 
-#include <ros/ros.h>
+#include <rclcpp/rclcpp.hpp>
 
 #include <ocs2_oc/synchronized_module/ReferenceManagerDecorator.h>
+#include <ocs2_msgs/msg/mode_schedule.hpp>
+#include <ocs2_msgs/msg/mpc_target_trajectories.hpp>
 
 namespace ocs2 {
 
@@ -71,13 +73,13 @@ class RosReferenceManager final : public ReferenceManagerDecorator {
    * (1) ModeSchedule : The predefined mode schedule for time-triggered hybrid systems.
    * (2) TargetTrajectories : The commanded TargetTrajectories.
    */
-  void subscribe(ros::NodeHandle& nodeHandle);
+  void subscribe(rclcpp::Node::SharedPtr& nodeHandle);
 
  private:
   const std::string topicPrefix_;
 
-  ::ros::Subscriber modeScheduleSubscriber_;
-  ::ros::Subscriber targetTrajectoriesSubscriber_;
+  ::rclcpp::Subscription<ocs2_msgs::msg::ModeSchedule>::SharedPtr modeScheduleSubscriber_;
+  ::rclcpp::Subscription<ocs2_msgs::msg::MPCTargetTrajectories>::SharedPtr targetTrajectoriesSubscriber_;
 };
 
 /******************************************************************************************************/
@@ -85,8 +87,8 @@ class RosReferenceManager final : public ReferenceManagerDecorator {
 /******************************************************************************************************/
 template <class ReferenceManagerType, class... Args>
 std::unique_ptr<RosReferenceManager> RosReferenceManager::create(const std::string& topicPrefix, Args&&... args) {
-  auto referenceManagerPtr = std::make_shared<ReferenceManagerType>(std::forward<Args>(args)...);
-  return std::make_unique<RosReferenceManager>(topicPrefix, std::move(referenceManagerPtr));
+  std::shared_ptr<ReferenceManagerInterface> referenceManagerPtr(new ReferenceManagerType(std::forward<Args>(args)...));
+  return std::unique_ptr<RosReferenceManager>(new RosReferenceManager(topicPrefix, std::move(referenceManagerPtr)));
 }
 
 }  // namespace ocs2

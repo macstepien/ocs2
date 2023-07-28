@@ -1,42 +1,28 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.10.2)
 project(ocs2_msgs)
 
-find_package(ament_cmake REQUIRED
-  COMPONENTS
-    std_msgs
-    message_generation
+find_package(ament_cmake REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(builtin_interfaces REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
+
+rosidl_generate_interfaces(${PROJECT_NAME}
+  "msg/LagrangianMetrics.msg"
+  "msg/Multiplier.msg"
+  "msg/Constraint.msg"
+  "msg/MPCState.msg"
+  "msg/MPCInput.msg"
+  "msg/ModeSchedule.msg"
+  "msg/MPCObservation.msg"
+  "msg/MPCPerformanceIndices.msg"
+  "msg/MPCTargetTrajectories.msg"
+  "msg/ControllerData.msg"
+  "msg/MPCFlattenedController.msg"
+  "srv/Reset.srv"
+  DEPENDENCIES builtin_interfaces std_msgs
 )
 
-add_message_files(
-  FILES
-    mpc_state.msg
-    mpc_input.msg
-    mode_schedule.msg
-    mpc_observation.msg
-    mpc_performance_indices.msg
-    mpc_target_trajectories.msg
-    controller_data.msg
-    mpc_flattened_controller.msg
-    lagrangian_metrics.msg
-    multiplier.msg
-    constraint.msg
-)
-
-add_service_files(
-  FILES
-    reset.srv
-)
-
-generate_messages(
-  DEPENDENCIES
-    std_msgs
-)
-
-###################################
-## ament specific configuration ##
-###################################
-
-ament_export_dependencies(std_msgs
-message_runtime)
+ament_export_dependencies(std_msgs)
+ament_export_dependencies(rosidl_default_runtime)
 
 ament_package()

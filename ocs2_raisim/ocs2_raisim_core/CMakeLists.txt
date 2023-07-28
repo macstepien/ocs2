@@ -83,7 +83,7 @@ install(DIRECTORY include/${PROJECT_NAME}/
 ## ament specific configuration ##
 ###################################
 
-ament_export_dependencies(Boost
+ament_export_dependencies(Boost ${AMENT_PACKAGE_DEPENDENCIES}
 raisim)
 
 ament_export_include_directories(include

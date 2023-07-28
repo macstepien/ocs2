@@ -106,7 +106,7 @@ endif()
 ## ament specific configuration ##
 ###################################
 
-ament_export_dependencies(pinocchio)
+ament_export_dependencies(pinocchio ${AMENT_PACKAGE_DEPENDENCIES})
 
 ament_export_include_directories(include)
 

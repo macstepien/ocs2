@@ -191,10 +191,7 @@ endif()
 ## ament specific configuration ##
 ###################################
 
-ament_export_dependencies(ocs2_core
-ocs2_oc
-ocs2_mpc
-ocs2_qp_solver
+ament_export_dependencies(${AMENT_PACKAGE_DEPENDENCIES}
 Boost)
 
 ament_export_include_directories(include

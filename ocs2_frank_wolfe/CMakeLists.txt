@@ -17,7 +17,6 @@ find_package(GLPK MODULE REQUIRED)
 include_directories(
     include
     ${EIGEN3_INCLUDE_DIRS}
-    ${ocs2_core_INCLUDE_DIRS}
 )
 
 add_library(${PROJECT_NAME}

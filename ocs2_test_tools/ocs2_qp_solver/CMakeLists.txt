@@ -1,9 +1,15 @@
 cmake_minimum_required(VERSION 3.8)
 project(ocs2_qp_solver)
 
-find_package(ament_cmake REQUIRED)
-find_package(ocs2_core REQUIRED)
-find_package(ocs2_oc REQUIRED)
+set(AMENT_PACKAGE_DEPENDENCIES
+  ament_cmake
+  ocs2_core
+  ocs2_oc
+)
+
+foreach(Dependency IN ITEMS ${AMENT_PACKAGE_DEPENDENCIES})
+  find_package(${Dependency} REQUIRED)
+endforeach()
   
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 
@@ -14,8 +20,6 @@ include_directories(
   include
   test/include
   ${EIGEN3_INCLUDE_DIRS}
-  ${ocs2_core_INCLUDE_DIRS}
-  ${ocs2_oc_INCLUDE_DIRS}
 )
 
 # Declare a C++ library
@@ -26,6 +30,9 @@ add_library(${PROJECT_NAME}
   src/QpTrajectories.cpp
 )
 target_link_libraries(${PROJECT_NAME})
+ament_target_dependencies(${PROJECT_NAME}
+  ${AMENT_PACKAGE_DEPENDENCIES}
+)
 target_compile_options(${PROJECT_NAME} PUBLIC ${OCS2_CXX_FLAGS})
 
 #########################

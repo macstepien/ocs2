@@ -27,8 +27,10 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************/
 
-#include <ros/init.h>
-#include <ros/package.h>
+#include <filesystem>
+
+#include <rclcpp/rclcpp.hpp>
+#include <ament_index_cpp/get_package_share_directory.hpp>
 
 #include <ocs2_ros_interfaces/mrt/MRT_ROS_Dummy_Loop.h>
 #include <ocs2_ros_interfaces/mrt/MRT_ROS_Interface.h>
@@ -38,25 +40,22 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "ocs2_cartpole_ros/CartpoleDummyVisualization.h"
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv)
+{
   const std::string robotName = "cartpole";
 
-  // task file
-  std::vector<std::string> programArgs{};
-  ::ros::removeROSArgs(argc, argv, programArgs);
-  if (programArgs.size() <= 1) {
-    throw std::runtime_error("No task file specified. Aborting.");
-  }
-  std::string taskFileFolderName = std::string(programArgs[1]);
-
   // Initialize ros node
-  ros::init(argc, argv, robotName + "_mrt");
-  ros::NodeHandle nodeHandle;
+  rclcpp::init(argc, argv);
+  rclcpp::Node::SharedPtr nodeHandle = std::make_shared<rclcpp::Node>("cartpole_mrt");
 
   // Robot interface
-  const std::string taskFile = ros::package::getPath("ocs2_cartpole") + "/config/" + taskFileFolderName + "/task.info";
-  const std::string libFolder = ros::package::getPath("ocs2_cartpole") + "/auto_generated";
-  ocs2::cartpole::CartPoleInterface cartPoleInterface(taskFile, libFolder, false /*verbose*/);
+  std::string taskFile =
+      std::filesystem::path(ament_index_cpp::get_package_share_directory("ocs2_cartpole")) /
+      "config" / "mpc" / "task.info";
+  std::string libraryFolder =
+      std::filesystem::path(ament_index_cpp::get_package_share_directory("ocs2_cartpole")) /
+      "auto_generated";
+  ocs2::cartpole::CartPoleInterface cartPoleInterface(taskFile, libraryFolder, false /*verbose*/);
 
   // MRT
   ocs2::MRT_ROS_Interface mrt(robotName);

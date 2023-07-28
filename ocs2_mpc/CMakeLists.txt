@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.8)
 project(ocs2_mpc)
 
-set(PACKAGE_INCLUDE_DEPENDS
+set(AMENT_PACKAGE_DEPENDENCIES
   ament_cmake
   ocs2_core
   ocs2_oc
 )
 
-foreach(Dependency IN ITEMS ${PACKAGE_INCLUDE_DEPENDS})
+foreach(Dependency IN ITEMS ${AMENT_PACKAGE_DEPENDENCIES})
   find_package(${Dependency} REQUIRED)
 endforeach()
 
@@ -29,8 +29,6 @@ include_directories(
   include
   ${EIGEN3_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIRS}
-  ${ocs2_core_INCLUDE_DIRS}
-  ${ocs2_oc_INCLUDE_DIRS}
 )
 
 add_library(${PROJECT_NAME}
@@ -43,12 +41,18 @@ add_library(${PROJECT_NAME}
   # src/MPC_OCS2.cpp
 )
 target_link_libraries(${PROJECT_NAME})
+ament_target_dependencies(${PROJECT_NAME}
+  ${AMENT_PACKAGE_DEPENDENCIES}
+)
 target_compile_options(${PROJECT_NAME} PUBLIC ${OCS2_CXX_FLAGS})
 
 add_executable(${PROJECT_NAME}_lintTarget
   src/lintTarget.cpp
 )
 target_link_libraries(${PROJECT_NAME}_lintTarget
+)
+ament_target_dependencies(${PROJECT_NAME}_lintTarget
+  ${AMENT_PACKAGE_DEPENDENCIES}
 )
 
 #########################
@@ -95,8 +99,7 @@ install(DIRECTORY include/${PROJECT_NAME}/
 ## ament specific configuration ##
 ###################################
 
-ament_export_dependencies(ocs2_core
-ocs2_oc
+ament_export_dependencies(${AMENT_PACKAGE_DEPENDENCIES}
 Boost)
 
 ament_export_include_directories(include

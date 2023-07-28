@@ -100,7 +100,7 @@ install(DIRECTORY include/${PROJECT_NAME}/
 ## ament specific configuration ##
 ###################################
 
-ament_export_dependencies(onnxruntime)
+ament_export_dependencies(onnxruntime ${AMENT_PACKAGE_DEPENDENCIES})
 
 ament_export_include_directories(include)
 
