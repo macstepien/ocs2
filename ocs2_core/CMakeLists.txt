@@ -1,8 +1,14 @@
 cmake_minimum_required(VERSION 3.8)
 project(ocs2_core)
 
-find_package(ament_cmake REQUIRED)
-find_package(ocs2_thirdparty REQUIRED)
+set(AMENT_PACKAGE_DEPENDENCIES
+  ament_cmake
+  ocs2_thirdparty
+)
+
+foreach(Dependency IN ITEMS ${AMENT_PACKAGE_DEPENDENCIES})
+  find_package(${Dependency} REQUIRED)
+endforeach()
 
 find_package(Boost REQUIRED COMPONENTS
   system
@@ -131,6 +137,9 @@ target_link_libraries(${PROJECT_NAME}
   OpenMP::OpenMP_CXX
   Threads::Threads
 )
+ament_target_dependencies(${PROJECT_NAME}
+  ${AMENT_PACKAGE_DEPENDENCIES}
+)
 target_compile_options(${PROJECT_NAME} PUBLIC ${OCS2_CXX_FLAGS})
 
 add_executable(${PROJECT_NAME}_lintTarget
@@ -138,6 +147,9 @@ add_executable(${PROJECT_NAME}_lintTarget
 )
 target_link_libraries(${PROJECT_NAME}_lintTarget
   ${Boost_LIBRARIES}
+)
+ament_target_dependencies(${PROJECT_NAME}_lintTarget
+  ${AMENT_PACKAGE_DEPENDENCIES}
 )
 
 #########################
