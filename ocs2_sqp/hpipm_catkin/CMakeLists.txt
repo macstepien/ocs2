@@ -18,7 +18,7 @@ find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 include(FetchContent)
 
 # Define directories
-set(HPIPM_DEVEL_PREFIX share CACHE STRING "HPIPM install path")
+set(HPIPM_DEVEL_PREFIX /home/pendulum/hpipm_ocs2/ CACHE STRING "HPIPM install path")
 set(HPIPM_INCLUDE_DIR ${HPIPM_DEVEL_PREFIX}/include)
 set(HPIPM_LIB_DIR ${HPIPM_DEVEL_PREFIX}/lib)
 set(HPIPM_DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download)
@@ -30,7 +30,7 @@ file(MAKE_DIRECTORY ${HPIPM_LIB_DIR})
 file(MAKE_DIRECTORY ${HPIPM_DOWNLOAD_DIR})
 file(MAKE_DIRECTORY ${HPIPM_BUILD_DIR})
 
-message(WARNING "BLASFEO_PATH: " ${BLASFEO_PATH})
+# message(WARNING "BLASFEO_PATH: " ${BLASFEO_PATH})
 
 # HPIPM Settings
 set(BLASFEO_PATH ${BLASFEO_PATH} CACHE STRING "BLASFEO installation path" FORCE)
@@ -115,16 +115,16 @@ install(DIRECTORY include/${PROJECT_NAME}/
 #############
 
 if(BUILD_TESTING)
-find_package(ament_cmake_gtest REQUIRED)
-ament_add_gtest(test_${PROJECT_NAME}
-  test/testHpipmInterface.cpp
-)
-add_dependencies(test_${PROJECT_NAME})
-target_link_libraries(test_${PROJECT_NAME}
-  ${PROJECT_NAME}
-  hpipm
-  gtest_main
-)
+  find_package(ament_cmake_gtest REQUIRED)
+  ament_add_gtest(test_${PROJECT_NAME}
+    test/testHpipmInterface.cpp
+  )
+  add_dependencies(test_${PROJECT_NAME})
+  target_link_libraries(test_${PROJECT_NAME}
+    ${PROJECT_NAME}
+    hpipm
+    gtest_main
+  )
 endif()
 
 ###################################
