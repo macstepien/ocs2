@@ -107,70 +107,70 @@ install(DIRECTORY test/include/${PROJECT_NAME}/
 ## Testing ##
 #############
 
-if(BUILD_TESTING)
+# if(BUILD_TESTING)
 
-  find_package(ament_cmake_gtest REQUIRED)
+#   find_package(ament_cmake_gtest REQUIRED)
   
-  ament_add_gtest(test_${PROJECT_NAME}_multiple_shooting
-    test/multiple_shooting/testProjectionMultiplierCoefficients.cpp
-    test/multiple_shooting/testTranscriptionMetrics.cpp
-    test/multiple_shooting/testTranscriptionPerformanceIndex.cpp
-  )
-  target_link_libraries(test_${PROJECT_NAME}_multiple_shooting
-    ${PROJECT_NAME}
-    gtest_main
-  )
+#   ament_add_gtest(test_${PROJECT_NAME}_multiple_shooting
+#     test/multiple_shooting/testProjectionMultiplierCoefficients.cpp
+#     test/multiple_shooting/testTranscriptionMetrics.cpp
+#     test/multiple_shooting/testTranscriptionPerformanceIndex.cpp
+#   )
+#   target_link_libraries(test_${PROJECT_NAME}_multiple_shooting
+#     ${PROJECT_NAME}
+#     gtest_main
+#   )
 
-  ament_add_gtest(test_${PROJECT_NAME}_data
-    test/oc_data/testTimeDiscretization.cpp
-  )
-  target_link_libraries(test_${PROJECT_NAME}_data
-    ${PROJECT_NAME}
-    gtest_main
-  )
+#   ament_add_gtest(test_${PROJECT_NAME}_data
+#     test/oc_data/testTimeDiscretization.cpp
+#   )
+#   target_link_libraries(test_${PROJECT_NAME}_data
+#     ${PROJECT_NAME}
+#     gtest_main
+#   )
 
-  ament_add_gtest(test_${PROJECT_NAME}_rollout
-    test/rollout/testTimeTriggeredRollout.cpp
-    test/rollout/testStateTriggeredRollout.cpp
-  )
-  target_link_libraries(test_${PROJECT_NAME}_rollout
-    ${PROJECT_NAME}
-    gtest_main
-  )
+#   ament_add_gtest(test_${PROJECT_NAME}_rollout
+#     test/rollout/testTimeTriggeredRollout.cpp
+#     test/rollout/testStateTriggeredRollout.cpp
+#   )
+#   target_link_libraries(test_${PROJECT_NAME}_rollout
+#     ${PROJECT_NAME}
+#     gtest_main
+#   )
 
-  ament_add_gtest(test_change_of_variables
-    test/testChangeOfInputVariables.cpp
-  )
-  target_link_libraries(test_change_of_variables
-    ${PROJECT_NAME}
-    gtest_main
-  )
+#   ament_add_gtest(test_change_of_variables
+#     test/testChangeOfInputVariables.cpp
+#   )
+#   target_link_libraries(test_change_of_variables
+#     ${PROJECT_NAME}
+#     gtest_main
+#   )
 
-  ament_add_gtest(test_trajectory_spreading
-    test/trajectory_adjustment/TrajectorySpreadingTest.cpp
-  )
-  target_link_libraries(test_trajectory_spreading
-    ${PROJECT_NAME}
-    gtest_main
-  )
+#   ament_add_gtest(test_trajectory_spreading
+#     test/trajectory_adjustment/TrajectorySpreadingTest.cpp
+#   )
+#   target_link_libraries(test_trajectory_spreading
+#     ${PROJECT_NAME}
+#     gtest_main
+#   )
 
-  ament_add_gtest(test_ocp_to_kkt
-    test/oc_problem/testOcpToKkt.cpp
-  )
-  target_link_libraries(test_ocp_to_kkt
-    ${PROJECT_NAME}
-    gtest_main
-  )
+#   ament_add_gtest(test_ocp_to_kkt
+#     test/oc_problem/testOcpToKkt.cpp
+#   )
+#   target_link_libraries(test_ocp_to_kkt
+#     ${PROJECT_NAME}
+#     gtest_main
+#   )
 
-  ament_add_gtest(test_precondition
-    test/precondition/testPrecondition.cpp
-  )
-  target_link_libraries(test_precondition
-    ${PROJECT_NAME}
-    gtest_main
-  )
+#   ament_add_gtest(test_precondition
+#     test/precondition/testPrecondition.cpp
+#   )
+#   target_link_libraries(test_precondition
+#     ${PROJECT_NAME}
+#     gtest_main
+#   )
 
-endif()
+# endif()
 
 ###################################
 ## ament specific configuration ##

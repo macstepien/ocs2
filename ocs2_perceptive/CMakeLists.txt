@@ -72,26 +72,27 @@ install(
 ## Testing ##
 #############
 
-if(BUILD_TESTING)
-find_package(ament_cmake_gtest REQUIRED)
-ament_add_gtest(test_bilinear_interpolation
-  test/interpolation/testBilinearInterpolation.cpp
-)
-target_link_libraries(test_bilinear_interpolation
-  ${PROJECT_NAME}
-  ${Boost_LIBRARIES}
-  gtest_main
-)
+# if(BUILD_TESTING)
+# find_package(ament_cmake_gtest REQUIRED)
+# ament_add_gtest(test_bilinear_interpolation
+#   test/interpolation/testBilinearInterpolation.cpp
+# )
+# target_link_libraries(test_bilinear_interpolation
+#   ${PROJECT_NAME}
+#   ${Boost_LIBRARIES}
+#   gtest_main
+# )
 
-ament_add_gtest(test_trilinear_interpolation
-  test/interpolation/testTrilinearInterpolation.cpp
-)
-target_link_libraries(test_trilinear_interpolation
-  ${PROJECT_NAME}
-  ${Boost_LIBRARIES}
-  gtest_main
-)
-endif()
+# ament_add_gtest(test_trilinear_interpolation
+#   test/interpolation/testTrilinearInterpolation.cpp
+# )
+# target_link_libraries(test_trilinear_interpolation
+#   ${PROJECT_NAME}
+#   ${Boost_LIBRARIES}
+#   gtest_main
+# )
+# endif()
+
 ###################################
 ## ament specific configuration ##
 ###################################

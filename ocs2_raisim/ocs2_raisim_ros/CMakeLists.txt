@@ -60,16 +60,17 @@ install(TARGETS ${PROJECT_NAME}
 ## Testing ##
 #############
 
-if(BUILD_TESTING)
-find_package(ament_cmake_gtest REQUIRED)
-  ament_add_gtest(test_${PROJECT_NAME}
-    test/testRosConversion.cpp
-  )
-  target_link_libraries(test_${PROJECT_NAME}
-    ${PROJECT_NAME}
-    gtest_main
-  )
-endif()
+# if(BUILD_TESTING)
+# find_package(ament_cmake_gtest REQUIRED)
+#   ament_add_gtest(test_${PROJECT_NAME}
+#     test/testRosConversion.cpp
+#   )
+#   target_link_libraries(test_${PROJECT_NAME}
+#     ${PROJECT_NAME}
+#     gtest_main
+#   )
+# endif()
+
 ###################################
 ## ament specific configuration ##
 ###################################

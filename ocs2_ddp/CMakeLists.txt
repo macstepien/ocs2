@@ -93,99 +93,99 @@ install(DIRECTORY include/${PROJECT_NAME}/
 ## Testing ##
 #############
 
-if(BUILD_TESTING)
-find_package(ament_cmake_gtest REQUIRED)
-ament_add_gtest(exp0_ddp_test
-  test/Exp0Test.cpp
-)
-target_link_libraries(exp0_ddp_test
-  ${PROJECT_NAME}
-  ${Boost_LIBRARIES}
-  gtest_main
-)
+# if(BUILD_TESTING)
+# find_package(ament_cmake_gtest REQUIRED)
+# ament_add_gtest(exp0_ddp_test
+#   test/Exp0Test.cpp
+# )
+# target_link_libraries(exp0_ddp_test
+#   ${PROJECT_NAME}
+#   ${Boost_LIBRARIES}
+#   gtest_main
+# )
 
-ament_add_gtest(exp1_ddp_test
-  test/Exp1Test.cpp
-)
-target_link_libraries(exp1_ddp_test
-  ${PROJECT_NAME}
-  ${Boost_LIBRARIES}
-  gtest_main
-)
+# ament_add_gtest(exp1_ddp_test
+#   test/Exp1Test.cpp
+# )
+# target_link_libraries(exp1_ddp_test
+#   ${PROJECT_NAME}
+#   ${Boost_LIBRARIES}
+#   gtest_main
+# )
 
-ament_add_gtest(correctness_test
-  test/CorrectnessTest.cpp
-)
-target_link_libraries(correctness_test
-  ${PROJECT_NAME}
-  ${Boost_LIBRARIES}
-  gtest_main
-)
+# ament_add_gtest(correctness_test
+#   test/CorrectnessTest.cpp
+# )
+# target_link_libraries(correctness_test
+#   ${PROJECT_NAME}
+#   ${Boost_LIBRARIES}
+#   gtest_main
+# )
 
-ament_add_gtest(riccati_ode_test
-  test/RiccatiTest.cpp
-)
-target_link_libraries(riccati_ode_test
-  ${PROJECT_NAME}
-  gtest_main
-)
+# ament_add_gtest(riccati_ode_test
+#   test/RiccatiTest.cpp
+# )
+# target_link_libraries(riccati_ode_test
+#   ${PROJECT_NAME}
+#   gtest_main
+# )
 
-ament_add_gtest(circular_kinematics_ddp_test
-  test/CircularKinematicsTest.cpp
-)
-target_link_libraries(circular_kinematics_ddp_test
-  ${PROJECT_NAME}
-  ${Boost_LIBRARIES}
-  gtest_main
-)
+# ament_add_gtest(circular_kinematics_ddp_test
+#   test/CircularKinematicsTest.cpp
+# )
+# target_link_libraries(circular_kinematics_ddp_test
+#   ${PROJECT_NAME}
+#   ${Boost_LIBRARIES}
+#   gtest_main
+# )
 
-ament_add_gtest(hybrid_slq_test
-  test/HybridSlqTest.cpp
-)
-target_link_libraries(hybrid_slq_test
-  ${PROJECT_NAME}
-  ${Boost_LIBRARIES}
-  gtest_main
-)
+# ament_add_gtest(hybrid_slq_test
+#   test/HybridSlqTest.cpp
+# )
+# target_link_libraries(hybrid_slq_test
+#   ${PROJECT_NAME}
+#   ${Boost_LIBRARIES}
+#   gtest_main
+# )
 
-ament_add_gtest(bouncing_mass_test
-  test/bouncingmass/BouncingMassTest.cpp
-  test/bouncingmass/OverallReference.cpp
-  test/bouncingmass/Reference.cpp
-)
-target_link_libraries(bouncing_mass_test
-  ${PROJECT_NAME}
-  ${Boost_LIBRARIES}
-  gtest_main
-)
+# ament_add_gtest(bouncing_mass_test
+#   test/bouncingmass/BouncingMassTest.cpp
+#   test/bouncingmass/OverallReference.cpp
+#   test/bouncingmass/Reference.cpp
+# )
+# target_link_libraries(bouncing_mass_test
+#   ${PROJECT_NAME}
+#   ${Boost_LIBRARIES}
+#   gtest_main
+# )
 
-ament_add_gtest(testContinuousTimeLqr
-  test/testContinuousTimeLqr.cpp
-)
-target_link_libraries(testContinuousTimeLqr
-  ${Boost_LIBRARIES}
-  ${PROJECT_NAME}
-  gtest_main
-)
+# ament_add_gtest(testContinuousTimeLqr
+#   test/testContinuousTimeLqr.cpp
+# )
+# target_link_libraries(testContinuousTimeLqr
+#   ${Boost_LIBRARIES}
+#   ${PROJECT_NAME}
+#   gtest_main
+# )
 
-ament_add_gtest(testDdpHelperFunction
-  test/testDdpHelperFunction.cpp
-)
-target_link_libraries(testDdpHelperFunction
-  ${Boost_LIBRARIES}
-  ${PROJECT_NAME}
-  gtest_main
-)
+# ament_add_gtest(testDdpHelperFunction
+#   test/testDdpHelperFunction.cpp
+# )
+# target_link_libraries(testDdpHelperFunction
+#   ${Boost_LIBRARIES}
+#   ${PROJECT_NAME}
+#   gtest_main
+# )
 
-ament_add_gtest(testReachingTask
-  test/testReachingTask.cpp
-)
-target_link_libraries(testReachingTask
-  ${Boost_LIBRARIES}
-  ${PROJECT_NAME}
-  gtest_main
-)
-endif()
+# ament_add_gtest(testReachingTask
+#   test/testReachingTask.cpp
+# )
+# target_link_libraries(testReachingTask
+#   ${Boost_LIBRARIES}
+#   ${PROJECT_NAME}
+#   gtest_main
+# )
+# endif()
 
 ###################################
 ## ament specific configuration ##

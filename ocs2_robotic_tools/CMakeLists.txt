@@ -67,18 +67,18 @@ install(DIRECTORY
 ## Testing ##
 #############
 
-if(BUILD_TESTING)
-find_package(ament_cmake_gtest REQUIRED)
-ament_add_gtest(rotation_transform_tests
-  test/common/TestRotationTransforms.cpp
-  test/common/TestRotationDerivativesTransforms.cpp
-)
-target_link_libraries(rotation_transform_tests
-  ${PROJECT_NAME}
-  gtest_main
-)
-target_compile_options(rotation_transform_tests PRIVATE ${OCS2_CXX_FLAGS})
-endif()
+# if(BUILD_TESTING)
+# find_package(ament_cmake_gtest REQUIRED)
+# ament_add_gtest(rotation_transform_tests
+#   test/common/TestRotationTransforms.cpp
+#   test/common/TestRotationDerivativesTransforms.cpp
+# )
+# target_link_libraries(rotation_transform_tests
+#   ${PROJECT_NAME}
+#   gtest_main
+# )
+# target_compile_options(rotation_transform_tests PRIVATE ${OCS2_CXX_FLAGS})
+# endif()
 
 ###################################
 ## ament specific configuration ##

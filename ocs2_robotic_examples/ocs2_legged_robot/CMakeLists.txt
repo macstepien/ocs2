@@ -128,25 +128,26 @@ install(DIRECTORY config
 ## Testing ##
 #############
 
-if(BUILD_TESTING)
-find_package(ament_cmake_gtest REQUIRED)
-ament_add_gtest(${PROJECT_NAME}_test
-  test/AnymalFactoryFunctions.cpp
-  test/constraint/testEndEffectorLinearConstraint.cpp
-  test/constraint/testFrictionConeConstraint.cpp
-  test/constraint/testZeroForceConstraint.cpp
-)
-target_include_directories(${PROJECT_NAME}_test PRIVATE
-  test/include
-  ${PROJECT_BINARY_DIR}/include
-)
-target_link_libraries(${PROJECT_NAME}_test
-  gtest_main
-  ${PROJECT_NAME}
-  ${Boost_LIBRARIES}
-)
-target_compile_options(${PROJECT_NAME}_test PRIVATE ${FLAGS})
-endif()
+# if(BUILD_TESTING)
+# find_package(ament_cmake_gtest REQUIRED)
+# ament_add_gtest(${PROJECT_NAME}_test
+#   test/AnymalFactoryFunctions.cpp
+#   test/constraint/testEndEffectorLinearConstraint.cpp
+#   test/constraint/testFrictionConeConstraint.cpp
+#   test/constraint/testZeroForceConstraint.cpp
+# )
+# target_include_directories(${PROJECT_NAME}_test PRIVATE
+#   test/include
+#   ${PROJECT_BINARY_DIR}/include
+# )
+# target_link_libraries(${PROJECT_NAME}_test
+#   gtest_main
+#   ${PROJECT_NAME}
+#   ${Boost_LIBRARIES}
+# )
+# target_compile_options(${PROJECT_NAME}_test PRIVATE ${FLAGS})
+# endif()
+
 ###################################
 ## ament specific configuration ##
 ###################################

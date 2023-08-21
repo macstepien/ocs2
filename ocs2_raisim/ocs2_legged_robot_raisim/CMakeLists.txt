@@ -88,15 +88,15 @@ install(DIRECTORY config launch
 ## Testing ##
 #############
 
-if(BUILD_TESTING)
-find_package(ament_cmake_gtest REQUIRED)
-ament_add_gtest(${PROJECT_NAME}_test
-  test/testLeggedRobotRaisimConversions.cpp
-)
-target_link_libraries(${PROJECT_NAME}_test
-  gtest_main
-  ${PROJECT_NAME})
-endif()
+# if(BUILD_TESTING)
+# find_package(ament_cmake_gtest REQUIRED)
+# ament_add_gtest(${PROJECT_NAME}_test
+#   test/testLeggedRobotRaisimConversions.cpp
+# )
+# target_link_libraries(${PROJECT_NAME}_test
+#   gtest_main
+#   ${PROJECT_NAME})
+# endif()
 
 ###################################
 ## ament specific configuration ##

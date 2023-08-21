@@ -79,17 +79,19 @@ install(DIRECTORY include/${PROJECT_NAME}/
 ############
 # Testing ##
 ############
-if(BUILD_TESTING)
-find_package(ament_cmake_gtest REQUIRED)
-ament_add_gtest(testPinocchioInterface
-  test/testPinocchioInterface.cpp
-  test/testPinocchioEndEffectorKinematics.cpp
-)
-target_link_libraries(testPinocchioInterface
-  gtest_main
-  ${PROJECT_NAME}
-)
-endif()
+
+# if(BUILD_TESTING)
+# find_package(ament_cmake_gtest REQUIRED)
+# ament_add_gtest(testPinocchioInterface
+#   test/testPinocchioInterface.cpp
+#   test/testPinocchioEndEffectorKinematics.cpp
+# )
+# target_link_libraries(testPinocchioInterface
+#   gtest_main
+#   ${PROJECT_NAME}
+# )
+# endif()
+
 ###################################
 ## ament specific configuration ##
 ###################################

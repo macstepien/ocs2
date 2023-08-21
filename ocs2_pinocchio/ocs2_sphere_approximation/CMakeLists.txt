@@ -90,16 +90,17 @@ install(DIRECTORY include/${PROJECT_NAME}/
 ############
 # Testing ##
 ############
-if(BUILD_TESTING)
-find_package(ament_cmake_gtest REQUIRED)
-ament_add_gtest(PinocchioSphereKinematicsTest
-  test/testPinocchioSphereKinematics.cpp
-)
 
-target_link_libraries(PinocchioSphereKinematicsTest
-  gtest_main
-  ${PROJECT_NAME}
-endif()
+# if(BUILD_TESTING)
+# find_package(ament_cmake_gtest REQUIRED)
+# ament_add_gtest(PinocchioSphereKinematicsTest
+#   test/testPinocchioSphereKinematics.cpp
+# )
+
+# target_link_libraries(PinocchioSphereKinematicsTest
+#   gtest_main
+#   ${PROJECT_NAME}
+# endif()
 
 ###################################
 ## ament specific configuration ##

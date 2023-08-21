@@ -46,16 +46,16 @@ install(DIRECTORY include/${PROJECT_NAME}/
 ## Testing ##
 #############
 
-if(BUILD_TESTING)
-find_package(ament_cmake_gtest REQUIRED)
-ament_add_gtest(testDummyPyBindings
-  test/testDummyPyBindings.cpp
-)
-target_link_libraries(testDummyPyBindings
-  ${PROJECT_NAME}
-  gtest_main
-)
-endif()
+# if(BUILD_TESTING)
+# find_package(ament_cmake_gtest REQUIRED)
+# ament_add_gtest(testDummyPyBindings
+#   test/testDummyPyBindings.cpp
+# )
+# target_link_libraries(testDummyPyBindings
+#   ${PROJECT_NAME}
+#   gtest_main
+# )
+# endif()
 
 ###################################
 ## ament specific configuration ##

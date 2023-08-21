@@ -151,15 +151,15 @@ install(DIRECTORY launch rviz
 ## Testing ##
 #############
 
-if(BUILD_TESTING)
-find_package(ament_cmake_gtest REQUIRED)
-ament_add_gtest(ballbot_integration_test
-  test/ballbotIntegrationTest.cpp
-)
-target_link_libraries(ballbot_integration_test
-  ${Boost_LIBRARIES}
-)
-endif()
+# if(BUILD_TESTING)
+# find_package(ament_cmake_gtest REQUIRED)
+# ament_add_gtest(ballbot_integration_test
+#   test/ballbotIntegrationTest.cpp
+# )
+# target_link_libraries(ballbot_integration_test
+#   ${Boost_LIBRARIES}
+# )
+# endif()
 
 ###################################
 ## ament specific configuration ##

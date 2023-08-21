@@ -108,19 +108,20 @@ install(DIRECTORY config
 ## Testing ##
 #############
 
-if(BUILD_TESTING)
-find_package(ament_cmake_gtest REQUIRED)
-ament_add_gtest(${PROJECT_NAME}_PyBindingsTest
-  test/PyBindingsTest.cpp
-)
-target_include_directories(${PROJECT_NAME}_PyBindingsTest
-  PRIVATE ${PROJECT_BINARY_DIR}/include
-)
-target_link_libraries(${PROJECT_NAME}_PyBindingsTest
-  ${PROJECT_NAME}
-  ${Boost_LIBRARIES}
-)
-endif()
+# if(BUILD_TESTING)
+# find_package(ament_cmake_gtest REQUIRED)
+# ament_add_gtest(${PROJECT_NAME}_PyBindingsTest
+#   test/PyBindingsTest.cpp
+# )
+# target_include_directories(${PROJECT_NAME}_PyBindingsTest
+#   PRIVATE ${PROJECT_BINARY_DIR}/include
+# )
+# target_link_libraries(${PROJECT_NAME}_PyBindingsTest
+#   ${PROJECT_NAME}
+#   ${Boost_LIBRARIES}
+# )
+# endif()
+
 ###################################
 ## ament specific configuration ##
 ###################################

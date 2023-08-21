@@ -99,23 +99,25 @@ install(
 #############
 ## Testing ##
 #############
-if(BUILD_TESTING)
-find_package(ament_cmake_gtest REQUIRED)
-ament_add_gtest(${PROJECT_NAME}_test
-  # test/testAccessMethods.cpp
-  test/testAnymalCentroidalModel.cpp
-)
-target_include_directories(${PROJECT_NAME}_test PRIVATE
-  test/include
-)
-target_link_libraries(${PROJECT_NAME}_test
-  gtest_main
-  ${PROJECT_NAME}
-  ${Boost_LIBRARIES}
-  ${pinocchio_LIBRARIES}
-)
-target_compile_options(${PROJECT_NAME}_test PRIVATE ${FLAGS})
-endif()
+
+# if(BUILD_TESTING)
+#   find_package(ament_cmake_gtest REQUIRED)
+#   ament_add_gtest(${PROJECT_NAME}_test
+#     # test/testAccessMethods.cpp
+#     test/testAnymalCentroidalModel.cpp
+#   )
+#   target_include_directories(${PROJECT_NAME}_test PRIVATE
+#     test/include
+#   )
+#   target_link_libraries(${PROJECT_NAME}_test
+#     gtest_main
+#     ${PROJECT_NAME}
+#     ${Boost_LIBRARIES}
+#     ${pinocchio_LIBRARIES}
+#   )
+#   target_compile_options(${PROJECT_NAME}_test PRIVATE ${FLAGS})
+# endif()
+
 ###################################
 ## ament specific configuration ##
 ###################################

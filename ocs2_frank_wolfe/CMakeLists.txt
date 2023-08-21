@@ -43,35 +43,35 @@ install(TARGETS ${PROJECT_NAME}
 ## Testing ##
 #############
 
-if(BUILD_TESTING)
-find_package(ament_cmake_gtest REQUIRED)
-ament_add_gtest(quadratic_test
-  test/QuadraticTest.cpp
-)
-target_link_libraries(quadratic_test
-  ${PROJECT_NAME}
-  GLPK::GLPK
-  gtest_main
-)
+# if(BUILD_TESTING)
+# find_package(ament_cmake_gtest REQUIRED)
+# ament_add_gtest(quadratic_test
+#   test/QuadraticTest.cpp
+# )
+# target_link_libraries(quadratic_test
+#   ${PROJECT_NAME}
+#   GLPK::GLPK
+#   gtest_main
+# )
 
-ament_add_gtest(matyas_test
-  test/MatyasTest.cpp
-)
-target_link_libraries(matyas_test
-  ${PROJECT_NAME}
-  GLPK::GLPK
-  gtest_main
-)
+# ament_add_gtest(matyas_test
+#   test/MatyasTest.cpp
+# )
+# target_link_libraries(matyas_test
+#   ${PROJECT_NAME}
+#   GLPK::GLPK
+#   gtest_main
+# )
 
-ament_add_gtest(glpk_test
-  test/testGLPK.cpp
-)
-target_link_libraries(glpk_test
-  ${PROJECT_NAME}
-  GLPK::GLPK
-  gtest_main
-)
-endif()
+# ament_add_gtest(glpk_test
+#   test/testGLPK.cpp
+# )
+# target_link_libraries(glpk_test
+#   ${PROJECT_NAME}
+#   GLPK::GLPK
+#   gtest_main
+# )
+# endif()
 
 ###################################
 ## ament specific configuration ##

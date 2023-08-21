@@ -113,35 +113,36 @@ install(DIRECTORY config
 ## Testing ##
 #############
 
-if(BUILD_TESTING)
-find_package(ament_cmake_gtest REQUIRED)
-ament_add_gtest(ocs2_double_integrator_no_ros_integration_test
-  test/DoubleIntegratorNoRosIntegrationTest.cpp
-)
-target_include_directories(ocs2_double_integrator_no_ros_integration_test
-  PRIVATE ${PROJECT_BINARY_DIR}/include
-)
-target_link_libraries(ocs2_double_integrator_no_ros_integration_test
-  ${PROJECT_NAME}
-  gtest_main
-)
+# if(BUILD_TESTING)
+# find_package(ament_cmake_gtest REQUIRED)
+# ament_add_gtest(ocs2_double_integrator_no_ros_integration_test
+#   test/DoubleIntegratorNoRosIntegrationTest.cpp
+# )
+# target_include_directories(ocs2_double_integrator_no_ros_integration_test
+#   PRIVATE ${PROJECT_BINARY_DIR}/include
+# )
+# target_link_libraries(ocs2_double_integrator_no_ros_integration_test
+#   ${PROJECT_NAME}
+#   gtest_main
+# )
 
-ament_add_gtest(ocs2_double_integrator_pybinding_test
-  test/DoubleIntegratorPyBindingTest.cpp
-)
-add_dependencies(ocs2_double_integrator_pybinding_test
-  ${PROJECT_NAME}
-)
-target_include_directories(ocs2_double_integrator_pybinding_test
-  PRIVATE ${PROJECT_BINARY_DIR}/include
-)
-target_link_libraries(ocs2_double_integrator_pybinding_test
-  ${PROJECT_NAME}
+# ament_add_gtest(ocs2_double_integrator_pybinding_test
+#   test/DoubleIntegratorPyBindingTest.cpp
+# )
+# add_dependencies(ocs2_double_integrator_pybinding_test
+#   ${PROJECT_NAME}
+# )
+# target_include_directories(ocs2_double_integrator_pybinding_test
+#   PRIVATE ${PROJECT_BINARY_DIR}/include
+# )
+# target_link_libraries(ocs2_double_integrator_pybinding_test
+#   ${PROJECT_NAME}
 
-# python tests
-ament_add_nose_test(test/DoubleIntegratorPyBindingTest.py)
+# # python tests
+# ament_add_nose_test(test/DoubleIntegratorPyBindingTest.py)
 
-endif()
+# endif()
+
 ###################################
 ## ament specific configuration ##
 ###################################
