@@ -13,13 +13,11 @@ set(AMENT_PACKAGE_DEPENDENCIES
   ocs2_ros_interfaces
 
   # visualization deps
-  roscpp
+  rclcpp
   std_msgs
   geometry_msgs
   visualization_msgs
 )
-
-
 
 foreach(Dependency IN ITEMS ${AMENT_PACKAGE_DEPENDENCIES})
   find_package(${Dependency} REQUIRED)
@@ -31,6 +29,11 @@ pkg_check_modules(hpp-fcl REQUIRED hpp-fcl)
 # requires liboctomap-dev and libassimp-dev
 
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
+
+find_package(Boost REQUIRED COMPONENTS
+  system
+  filesystem
+)
 
 ###########
 ## Build ##
@@ -60,7 +63,8 @@ link_directories(
 add_library(${PROJECT_NAME}
   src/GeometryInterfaceVisualization.cpp
 )
-add_dependencies(${PROJECT_NAME}
+ament_target_dependencies(${PROJECT_NAME}
+  ${AMENT_PACKAGE_DEPENDENCIES}
 )
 target_link_libraries(${PROJECT_NAME}
   ${pinocchio_LIBRARIES}

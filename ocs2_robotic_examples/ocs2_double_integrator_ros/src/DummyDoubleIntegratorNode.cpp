@@ -27,8 +27,8 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************/
 
-#include <ros/init.h>
-#include <ros/package.h>
+#include <rclcpp/rclcpp.hpp>
+
 
 #include <ocs2_ros_interfaces/mrt/MRT_ROS_Dummy_Loop.h>
 #include <ocs2_ros_interfaces/mrt/MRT_ROS_Interface.h>
@@ -50,8 +50,9 @@ int main(int argc, char** argv) {
   std::string taskFileFolderName = std::string(programArgs[1]);
 
   // Initialize ros node
-  ros::init(argc, argv, robotName + "_mrt");
-  ros::NodeHandle nodeHandle;
+  rclcpp::init(argc, argv);
+  rclcpp::Node::SharedPtr nodeHandle = std::make_shared<rclcpp::Node>(robotName + "_mrt");
+  
 
   // Robot interface
   const std::string taskFile = ros::package::getPath("ocs2_double_integrator") + "/config/" + taskFileFolderName + "/task.info";

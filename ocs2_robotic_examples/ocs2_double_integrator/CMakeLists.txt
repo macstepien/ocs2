@@ -51,7 +51,8 @@ include_directories(
 add_library(${PROJECT_NAME}
   src/DoubleIntegratorInterface.cpp
 )
-add_dependencies(${PROJECT_NAME}
+ament_target_dependencies(${PROJECT_NAME}
+  ${AMENT_PACKAGE_DEPENDENCIES}
 )
 target_link_libraries(${PROJECT_NAME}
   ${Boost_LIBRARIES}
@@ -116,8 +117,6 @@ if(BUILD_TESTING)
 find_package(ament_cmake_gtest REQUIRED)
 ament_add_gtest(ocs2_double_integrator_no_ros_integration_test
   test/DoubleIntegratorNoRosIntegrationTest.cpp
-)
-add_dependencies(ocs2_double_integrator_no_ros_integration_test
 )
 target_include_directories(ocs2_double_integrator_no_ros_integration_test
   PRIVATE ${PROJECT_BINARY_DIR}/include

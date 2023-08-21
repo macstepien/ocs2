@@ -12,8 +12,6 @@ set(AMENT_PACKAGE_DEPENDENCIES
   ocs2_robotic_assets
 )
 
-
-
 foreach(Dependency IN ITEMS ${AMENT_PACKAGE_DEPENDENCIES})
   find_package(${Dependency} REQUIRED)
 endforeach()
@@ -53,7 +51,8 @@ add_library(${PROJECT_NAME}
   src/PinocchioSphereKinematics.cpp
   src/PinocchioSphereKinematicsCppAd.cpp
 )
-add_dependencies(${PROJECT_NAME}
+ament_target_dependencies(${PROJECT_NAME}
+  ${AMENT_PACKAGE_DEPENDENCIES}
 )
 target_link_libraries(${PROJECT_NAME}
   ${pinocchio_LIBRARIES}

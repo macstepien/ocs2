@@ -48,7 +48,8 @@ include_directories(
 add_library(${PROJECT_NAME}
   src/BallbotDummyVisualization.cpp
 )
-add_dependencies(${PROJECT_NAME}
+ament_target_dependencies(${PROJECT_NAME}
+  ${AMENT_PACKAGE_DEPENDENCIES}
 )
 target_link_libraries(${PROJECT_NAME})
 target_compile_options(${PROJECT_NAME} PUBLIC ${OCS2_CXX_FLAGS})
@@ -56,8 +57,6 @@ target_compile_options(${PROJECT_NAME} PUBLIC ${OCS2_CXX_FLAGS})
 # Mpc node
 add_executable(ballbot_ddp
   src/BallbotDdpMpcNode.cpp
-)
-add_dependencies(ballbot_ddp
 )
 target_link_libraries(ballbot_ddp
 )
@@ -78,8 +77,6 @@ target_compile_options(ballbot_dummy_test PRIVATE ${OCS2_CXX_FLAGS})
 add_executable(ballbot_target
   src/BallbotTargetPoseCommand.cpp
 )
-add_dependencies(ballbot_target
-)
 target_link_libraries(ballbot_target
   ${Boost_LIBRARIES}
 )
@@ -90,8 +87,6 @@ add_executable(ballbot_mpc_mrt
   src/BallbotMpcMrtNode.cpp
   src/BallbotDummyVisualization.cpp
   )
-add_dependencies(ballbot_mpc_mrt
-  )
 target_link_libraries(ballbot_mpc_mrt
   )
 target_compile_options(ballbot_mpc_mrt  PRIVATE ${OCS2_CXX_FLAGS})
@@ -100,8 +95,6 @@ target_compile_options(ballbot_mpc_mrt  PRIVATE ${OCS2_CXX_FLAGS})
 add_executable(ballbot_sqp
   src/BallbotSqpMpcNode.cpp
 )
-add_dependencies(ballbot_sqp
-)
 target_link_libraries(ballbot_sqp
 )
 target_compile_options(ballbot_sqp  PRIVATE ${OCS2_CXX_FLAGS})
@@ -109,8 +102,6 @@ target_compile_options(ballbot_sqp  PRIVATE ${OCS2_CXX_FLAGS})
 ## SLP node for ballbot
 add_executable(ballbot_slp
   src/BallbotSlpMpcNode.cpp
-)
-add_dependencies(ballbot_slp
 )
 target_link_libraries(ballbot_slp
 )

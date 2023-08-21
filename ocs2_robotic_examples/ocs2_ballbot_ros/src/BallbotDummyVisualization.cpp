@@ -43,8 +43,8 @@ void BallbotDummyVisualization::update(const SystemObservation& observation, con
   const auto& targetTrajectories = command.mpcTargetTrajectories_;
 
   // publish world transform
-  ros::Time timeMsg = ros::Time::now();
-  geometry_msgs::TransformStamped world_transform;
+  rclcpp::Time timeMsg = rclcpp::Clock(RCL_ROS_TIME).now();
+  geometry_msgs::msg::TransformStamped world_transform;
   world_transform.header.stamp = timeMsg;
   world_transform.header.frame_id = "odom";
   world_transform.child_frame_id = "world";
@@ -55,14 +55,14 @@ void BallbotDummyVisualization::update(const SystemObservation& observation, con
   world_transform.transform.rotation.y = 0.0;
   world_transform.transform.rotation.z = 0.0;
   world_transform.transform.rotation.w = 1.0;
-  tfBroadcaster_.sendTransform(world_transform);
+  tfBroadcaster_->sendTransform(world_transform);
 
   // publish command transform
   const Eigen::Vector3d desiredPositionWorldToTarget(targetTrajectories.stateTrajectory.back()(0),
                                                      targetTrajectories.stateTrajectory.back()(1), 0.0);
   const auto desiredQuaternionBaseToWorld =
       getQuaternionFromEulerAnglesZyx<double>(targetTrajectories.stateTrajectory.back().segment<3>(2));
-  geometry_msgs::TransformStamped command_frame_transform;
+  geometry_msgs::msg::TransformStamped command_frame_transform;
   command_frame_transform.header.stamp = timeMsg;
   command_frame_transform.header.frame_id = "odom";
   command_frame_transform.child_frame_id = "command";
@@ -73,7 +73,7 @@ void BallbotDummyVisualization::update(const SystemObservation& observation, con
   command_frame_transform.transform.rotation.x = desiredQuaternionBaseToWorld.x();
   command_frame_transform.transform.rotation.y = desiredQuaternionBaseToWorld.y();
   command_frame_transform.transform.rotation.z = desiredQuaternionBaseToWorld.z();
-  tfBroadcaster_.sendTransform(command_frame_transform);
+  tfBroadcaster_->sendTransform(command_frame_transform);
 
   // publish joints transforms
   std::map<std::string, double> jointPositions{{"jball_x", observation.state(0)},
@@ -84,16 +84,16 @@ void BallbotDummyVisualization::update(const SystemObservation& observation, con
   robotStatePublisherPtr_->publishTransforms(jointPositions, timeMsg);
 }
 
-void BallbotDummyVisualization::launchVisualizerNode(ros::NodeHandle& nodeHandle) {
+void BallbotDummyVisualization::launchVisualizerNode(rclcpp::Node::SharedPtr& nodeHandle) {
   // load a kdl-tree from the urdf robot description and initialize the robot state publisher
   std::string urdfName = "robot_description";
   urdf::Model model;
   if (!model.initParam(urdfName)) {
-    ROS_ERROR("URDF model load was NOT successful");
+    RCLCPP_ERROR(nodeHandle->get_logger(), "URDF model load was NOT successful");
   }
   KDL::Tree tree;
   if (!kdl_parser::treeFromUrdfModel(model, tree)) {
-    ROS_ERROR("Failed to extract kdl tree from xml robot description");
+    RCLCPP_ERROR(nodeHandle->get_logger(), "Failed to extract kdl tree from xml robot description");
   }
 
   robotStatePublisherPtr_.reset(new robot_state_publisher::RobotStatePublisher(tree));

@@ -29,7 +29,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #pragma once
 
-#include <ros/ros.h>
+#include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/JointState.h>
 
 #include <ocs2_ros_interfaces/mrt/DummyObserver.h>
@@ -41,16 +41,16 @@ namespace double_integrator {
 
 class DoubleIntegratorDummyVisualization final : public DummyObserver {
  public:
-  explicit DoubleIntegratorDummyVisualization(ros::NodeHandle& nodeHandle) { launchVisualizerNode(nodeHandle); }
+  explicit DoubleIntegratorDummyVisualization(rclcpp::Node::SharedPtr& nodeHandle) { launchVisualizerNode(nodeHandle); }
 
   ~DoubleIntegratorDummyVisualization() override = default;
 
   void update(const SystemObservation& observation, const PrimalSolution& policy, const CommandData& command) override;
 
  private:
-  void launchVisualizerNode(ros::NodeHandle& nodeHandle);
+  void launchVisualizerNode(rclcpp::Node::SharedPtr& nodeHandle);
 
-  ros::Publisher jointPublisher_;
+  rclcpp::Publisher<>::SharedPtr jointPublisher_;
 };
 
 }  // namespace double_integrator

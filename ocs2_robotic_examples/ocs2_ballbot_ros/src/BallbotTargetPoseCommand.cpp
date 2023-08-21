@@ -71,8 +71,9 @@ TargetTrajectories commandLineToTargetTrajectories(const vector_t& commadLineTar
  */
 int main(int argc, char* argv[]) {
   const std::string robotName = "ballbot";
-  ::ros::init(argc, argv, robotName + "_target");
-  ::ros::NodeHandle nodeHandle;
+  ::rclcpp::init(argc, argv);
+  rclcpp::Node::SharedPtr nodeHandle = std::make_shared<rclcpp::Node>(robotName + "_target");
+  
 
   // [deltaX, deltaY, deltaYaw]
   const scalar_array_t relativeStateLimit{10.0, 10.0, 360.0};

@@ -29,7 +29,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "ocs2_mpcnet_core/dummy/MpcnetDummyObserverRos.h"
 
-#include <ros/ros.h>
+#include <rclcpp/rclcpp.hpp>
 
 #include <ocs2_ros_interfaces/common/RosMsgConversions.h>
 
@@ -39,8 +39,8 @@ namespace mpcnet {
 /******************************************************************************************************/
 /******************************************************************************************************/
 /******************************************************************************************************/
-MpcnetDummyObserverRos::MpcnetDummyObserverRos(ros::NodeHandle& nodeHandle, std::string topicPrefix) {
-  observationPublisher_ = nodeHandle.advertise<ocs2_msgs::mpc_observation>(topicPrefix + "_mpc_observation", 1);
+MpcnetDummyObserverRos::MpcnetDummyObserverRos(rclcpp::Node::SharedPtr& nodeHandle, std::string topicPrefix) {
+  observationPublisher_ = nodeHandle->create_publisher<ocs2_msgs::mpc_observation>(topicPrefix + "_mpc_observation", 1);
 }
 
 /******************************************************************************************************/
@@ -49,7 +49,7 @@ MpcnetDummyObserverRos::MpcnetDummyObserverRos(ros::NodeHandle& nodeHandle, std:
 void MpcnetDummyObserverRos::update(const SystemObservation& observation, const PrimalSolution& primalSolution,
                                     const CommandData& command) {
   auto observationMsg = ros_msg_conversions::createObservationMsg(observation);
-  observationPublisher_.publish(observationMsg);
+  observationPublisher_->publish(observationMsg);
 }
 
 }  // namespace mpcnet

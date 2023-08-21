@@ -72,8 +72,6 @@ add_library(${PROJECT_NAME}
   src/HpipmInterface.cpp
   src/HpipmInterfaceSettings.cpp
 )
-# add_dependencies(${PROJECT_NAME}
-# )
 ament_target_dependencies(${PROJECT_NAME}
   ${AMENT_PACKAGE_DEPENDENCIES}
 )

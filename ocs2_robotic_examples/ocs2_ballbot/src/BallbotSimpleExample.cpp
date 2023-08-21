@@ -31,8 +31,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <iostream>
 #include <string>
 
-#include <ros/package.h>
-
 // OCS2
 #include <ocs2_core/Types.h>
 #include <ocs2_core/cost/QuadraticStateCost.h>

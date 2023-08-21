@@ -43,12 +43,12 @@ namespace legged_robot {
 /******************************************************************************************************/
 /******************************************************************************************************/
 /******************************************************************************************************/
-GaitKeyboardPublisher::GaitKeyboardPublisher(ros::NodeHandle nodeHandle, const std::string& gaitFile, const std::string& robotName,
+GaitKeyboardPublisher::GaitKeyboardPublisher(rclcpp::Node::SharedPtr nodeHandle, const std::string& gaitFile, const std::string& robotName,
                                              bool verbose) {
   ROS_INFO_STREAM(robotName + "_mpc_mode_schedule node is setting up ...");
   loadData::loadStdVector(gaitFile, "list", gaitList_, verbose);
 
-  modeSequenceTemplatePublisher_ = nodeHandle.advertise<ocs2_msgs::mode_schedule>(robotName + "_mpc_mode_schedule", 1, true);
+  modeSequenceTemplatePublisher_ = nodeHandle->create_publisher<ocs2_msgs::mode_schedule>(robotName + "_mpc_mode_schedule", 1, true);
 
   gaitMap_.clear();
   for (const auto& gaitName : gaitList_) {
@@ -87,7 +87,7 @@ void GaitKeyboardPublisher::getKeyboardCommand() {
 
   try {
     ModeSequenceTemplate modeSequenceTemplate = gaitMap_.at(gaitCommand);
-    modeSequenceTemplatePublisher_.publish(createModeSequenceTemplateMsg(modeSequenceTemplate));
+    modeSequenceTemplatePublisher_->publish(createModeSequenceTemplateMsg(modeSequenceTemplate));
   } catch (const std::out_of_range& e) {
     std::cout << "Gait \"" << gaitCommand << "\" not found.\n";
     printGaitList(gaitList_);

@@ -39,7 +39,8 @@ add_library(${PROJECT_NAME}
   src/IpmSettings.cpp
   src/IpmSolver.cpp
 )
-add_dependencies(${PROJECT_NAME}
+ament_target_dependencies(${PROJECT_NAME}
+  ${AMENT_PACKAGE_DEPENDENCIES}
 )
 target_link_libraries(${PROJECT_NAME}
   ${Boost_LIBRARIES}
@@ -87,8 +88,6 @@ ament_add_gtest(test_${PROJECT_NAME}
   test/testSwitchedProblem.cpp
   test/testUnconstrained.cpp
   test/testValuefunction.cpp
-)
-add_dependencies(test_${PROJECT_NAME}
 )
 target_link_libraries(test_${PROJECT_NAME}
   ${PROJECT_NAME}

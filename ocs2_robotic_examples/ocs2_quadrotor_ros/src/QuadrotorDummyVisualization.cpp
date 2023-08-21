@@ -43,8 +43,8 @@ void QuadrotorDummyVisualization::update(const SystemObservation& observation, c
       Eigen::AngleAxisd{targetTrajectories.stateTrajectory.back()(3), Eigen::Vector3d::UnitZ()} *
       Eigen::AngleAxisd{targetTrajectories.stateTrajectory.back()(4), Eigen::Vector3d::UnitY()} *
       Eigen::AngleAxisd{targetTrajectories.stateTrajectory.back()(5), Eigen::Vector3d::UnitX()};
-  ros::Time timeMsg = ros::Time::now();
-  geometry_msgs::TransformStamped command_frame_transform;
+  rclcpp::Time timeMsg = rclcpp::Clock(RCL_ROS_TIME).now();
+  geometry_msgs::msg::TransformStamped command_frame_transform;
   command_frame_transform.header.stamp = timeMsg;
   command_frame_transform.header.frame_id = "odom";
   command_frame_transform.child_frame_id = "command";
@@ -55,13 +55,13 @@ void QuadrotorDummyVisualization::update(const SystemObservation& observation, c
   command_frame_transform.transform.rotation.x = desiredQuaternionBaseToWorld.x();
   command_frame_transform.transform.rotation.y = desiredQuaternionBaseToWorld.y();
   command_frame_transform.transform.rotation.z = desiredQuaternionBaseToWorld.z();
-  tfBroadcaster_.sendTransform(command_frame_transform);
+  tfBroadcaster_->sendTransform(command_frame_transform);
 
   tf::Transform transform;
   transform.setOrigin(tf::Vector3(observation.state(0), observation.state(1), observation.state(2)));
   tf::Quaternion q = tf::createQuaternionFromRPY(observation.state(3), observation.state(4), observation.state(5));
   transform.setRotation(q);
-  tfBroadcaster_.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "world", "base"));
+  tfBroadcaster_->sendTransform(tf::StampedTransform(transform, rclcpp::Clock(RCL_ROS_TIME).now(), "world", "base"));
 }
 
 }  // namespace quadrotor

@@ -29,8 +29,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <string>
 
-#include <ros/init.h>
-#include <ros/package.h>
+#include <rclcpp/rclcpp.hpp>
+
 
 #include <ocs2_core/Types.h>
 #include <ocs2_core/misc/LoadData.h>
@@ -98,8 +98,9 @@ int main(int argc, char* argv[]) {
   const std::string robotName = "legged_robot";
 
   // Initialize ros node
-  ::ros::init(argc, argv, robotName + "_target");
-  ::ros::NodeHandle nodeHandle;
+  ::rclcpp::init(argc, argv);
+  rclcpp::Node::SharedPtr nodeHandle = std::make_shared<rclcpp::Node>(robotName + "_target");
+  
   // Get node parameters
   std::string referenceFile;
   nodeHandle.getParam("/referenceFile", referenceFile);

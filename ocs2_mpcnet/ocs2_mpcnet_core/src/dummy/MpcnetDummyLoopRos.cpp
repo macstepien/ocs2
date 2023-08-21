@@ -29,7 +29,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "ocs2_mpcnet_core/dummy/MpcnetDummyLoopRos.h"
 
-#include <ros/ros.h>
+#include <rclcpp/rclcpp.hpp>
 
 namespace ocs2 {
 namespace mpcnet {

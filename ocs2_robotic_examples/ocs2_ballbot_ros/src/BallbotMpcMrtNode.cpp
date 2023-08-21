@@ -36,8 +36,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * ROS will only be used to send commands, and to publish visualization topics.
  */
 
-#include <ros/init.h>
-#include <ros/package.h>
+#include <rclcpp/rclcpp.hpp>
+
 
 #include <ocs2_core/thread_support/ExecuteAndSleep.h>
 #include <ocs2_core/thread_support/SetThreadPriority.h>
@@ -73,8 +73,9 @@ int main(int argc, char** argv) {
   std::string taskFileFolderName = std::string(programArgs[1]);
 
   // Initialize ros node
-  ros::init(argc, argv, robotName + "_mpc_mrt");
-  ros::NodeHandle nodeHandle;
+  rclcpp::init(argc, argv);
+  rclcpp::Node::SharedPtr nodeHandle = std::make_shared<rclcpp::Node>(robotName + "_mpc_mrt");
+  
 
   // Robot interface
   const std::string taskFile = ros::package::getPath("ocs2_ballbot") + "/config/" + taskFileFolderName + "/task.info";
@@ -93,7 +94,7 @@ int main(int argc, char** argv) {
   // ROS ReferenceManager. This gives us the command interface. Requires the observations to be published
   auto rosReferenceManagerPtr = std::make_shared<ocs2::RosReferenceManager>(robotName, ballbotInterface.getReferenceManagerPtr());
   rosReferenceManagerPtr->subscribe(nodeHandle);
-  auto observationPublisher = nodeHandle.advertise<ocs2_msgs::mpc_observation>(robotName + "_mpc_observation", 1);
+  auto observationPublisher = nodeHandle->create_publisher<ocs2_msgs::mpc_observation>(robotName + "_mpc_observation", 1);
   mpc.getSolverPtr()->setReferenceManager(rosReferenceManagerPtr);
 
   // Visualization
@@ -137,7 +138,7 @@ int main(int argc, char** argv) {
         ocs2::executeAndSleep([&]() { mpcMrtInterface.advanceMpc(); }, ballbotInterface.mpcSettings().mpcDesiredFrequency_);
       } catch (const std::exception& e) {
         mpcRunning = false;
-        ROS_ERROR_STREAM("[Ocs2 MPC thread] Error : " << e.what());
+        RCLCPP_ERROR_STREAM(nodeHandle->get_logger(), "[Ocs2 MPC thread] Error : " << e.what());
       }
     }
   });
@@ -180,7 +181,7 @@ int main(int argc, char** argv) {
           ballbotDummyVisualization.update(currentObservation, mpcMrtInterface.getPolicy(), mpcMrtInterface.getCommand());
 
           // Publish the observation. Only needed for the command interface
-          observationPublisher.publish(ocs2::ros_msg_conversions::createObservationMsg(currentObservation));
+          observationPublisher->publish(ocs2::ros_msg_conversions::createObservationMsg(currentObservation));
 
           ros::spinOnce();
         },

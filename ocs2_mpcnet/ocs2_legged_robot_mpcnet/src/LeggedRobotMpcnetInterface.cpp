@@ -29,8 +29,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "ocs2_legged_robot_mpcnet/LeggedRobotMpcnetInterface.h"
 
-#include <ros/package.h>
-
 #include <ocs2_ddp/GaussNewtonDDP_MPC.h>
 #include <ocs2_mpcnet_core/control/MpcnetOnnxController.h>
 #include <ocs2_oc/rollout/TimeTriggeredRollout.h>

@@ -31,7 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <mutex>
 
-#include <ros/ros.h>
+#include <rclcpp/rclcpp.hpp>
 
 #include <ocs2_core/Types.h>
 #include <ocs2_msgs/mode_schedule.h>
@@ -46,7 +46,7 @@ namespace legged_robot {
 
 class GaitReceiver : public SolverSynchronizedModule {
  public:
-  GaitReceiver(::ros::NodeHandle nodeHandle, std::shared_ptr<GaitSchedule> gaitSchedulePtr, const std::string& robotName);
+  GaitReceiver(::rclcpp::Node::SharedPtr nodeHandle, std::shared_ptr<GaitSchedule> gaitSchedulePtr, const std::string& robotName);
 
   void preSolverRun(scalar_t initTime, scalar_t finalTime, const vector_t& currentState,
                     const ReferenceManagerInterface& referenceManager) override;
@@ -58,7 +58,7 @@ class GaitReceiver : public SolverSynchronizedModule {
 
   std::shared_ptr<GaitSchedule> gaitSchedulePtr_;
 
-  ::ros::Subscriber mpcModeSequenceSubscriber_;
+  ::rclcpp::Subscription<>::SharedPtr mpcModeSequenceSubscriber_;
 
   std::mutex receivedGaitMutex_;
   std::atomic_bool gaitUpdated_;

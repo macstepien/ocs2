@@ -30,7 +30,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <thread>
 
 #include <ros/callback_queue.h>
-#include <ros/ros.h>
+#include <rclcpp/rclcpp.hpp>
 #include "std_msgs/String.h"
 
 // Global queue: will be available as a member variable
@@ -50,19 +50,20 @@ void subscriberWorker() {
 }
 
 int main(int argc, char* argv[]) {
-  ros::init(argc, argv, "my_node");
+  rclcpp::init(argc, argv);
+  rclcpp::Node::SharedPtr nodeHandle = std::make_shared<rclcpp::Node>("my_node");
 
   // Publisher
   rclcpp::Node::SharedPtr nh_pub;
   size_t publish_queue_size = 1000;
-  ros::Publisher chatter_pub = nh_pub.advertise<std_msgs::String>("chatter", publish_queue_size);
+  rclcpp::Publisher<>::SharedPtr chatter_pub = nh_pub.advertise<std_msgs::String>("chatter", publish_queue_size);
 
   // Subscriber
   rclcpp::Node::SharedPtr nh_sub;
   nh_sub.setCallbackQueue(&my_queue);
 
   size_t subscribe_queue_size = 1000;
-  ros::Subscriber sub = nh_sub.subscribe("chatter", subscribe_queue_size, chatterCallback);
+  rclcpp::Subscription<>::SharedPtr sub = nh_sub->create_subscription<>("chatter", subscribe_queue_size, chatterCallback);
 
   auto subscriberThread = std::thread(&subscriberWorker);
 
@@ -75,7 +76,7 @@ int main(int argc, char* argv[]) {
     ss << "hello world " << count;
     msg.data = ss.str();
 
-    chatter_pub.publish(msg);
+    chatter_pub->publish(msg);
     ros::spinOnce();
 
     loop_rate.sleep();

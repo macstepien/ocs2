@@ -29,7 +29,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #pragma once
 
-#include <ros/ros.h>
+#include <rclcpp/rclcpp.hpp>
 
 #include <ocs2_ros_interfaces/mrt/DummyObserver.h>
 
@@ -46,7 +46,7 @@ class MpcnetDummyObserverRos : public DummyObserver {
    * @param [in] nodeHandle : The ROS node handle.
    * @param [in] topicPrefix : The prefix defines the names for the observation's publishing topic "topicPrefix_mpc_observation".
    */
-  explicit MpcnetDummyObserverRos(ros::NodeHandle& nodeHandle, std::string topicPrefix = "anonymousRobot");
+  explicit MpcnetDummyObserverRos(rclcpp::Node::SharedPtr& nodeHandle, std::string topicPrefix = "anonymousRobot");
 
   /**
    * Default destructor.
@@ -62,7 +62,7 @@ class MpcnetDummyObserverRos : public DummyObserver {
   void update(const SystemObservation& observation, const PrimalSolution& primalSolution, const CommandData& command) override;
 
  private:
-  ros::Publisher observationPublisher_;
+  rclcpp::Publisher<>::SharedPtr observationPublisher_;
 };
 
 }  // namespace mpcnet

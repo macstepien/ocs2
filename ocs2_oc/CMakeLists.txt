@@ -116,8 +116,6 @@ if(BUILD_TESTING)
     test/multiple_shooting/testTranscriptionMetrics.cpp
     test/multiple_shooting/testTranscriptionPerformanceIndex.cpp
   )
-  add_dependencies(test_${PROJECT_NAME}_multiple_shooting
-  )
   target_link_libraries(test_${PROJECT_NAME}_multiple_shooting
     ${PROJECT_NAME}
     gtest_main
@@ -125,8 +123,6 @@ if(BUILD_TESTING)
 
   ament_add_gtest(test_${PROJECT_NAME}_data
     test/oc_data/testTimeDiscretization.cpp
-  )
-  add_dependencies(test_${PROJECT_NAME}_data
   )
   target_link_libraries(test_${PROJECT_NAME}_data
     ${PROJECT_NAME}
@@ -137,8 +133,6 @@ if(BUILD_TESTING)
     test/rollout/testTimeTriggeredRollout.cpp
     test/rollout/testStateTriggeredRollout.cpp
   )
-  add_dependencies(test_${PROJECT_NAME}_rollout
-  )
   target_link_libraries(test_${PROJECT_NAME}_rollout
     ${PROJECT_NAME}
     gtest_main
@@ -147,8 +141,6 @@ if(BUILD_TESTING)
   ament_add_gtest(test_change_of_variables
     test/testChangeOfInputVariables.cpp
   )
-  add_dependencies(test_change_of_variables
-  )
   target_link_libraries(test_change_of_variables
     ${PROJECT_NAME}
     gtest_main
@@ -156,8 +148,6 @@ if(BUILD_TESTING)
 
   ament_add_gtest(test_trajectory_spreading
     test/trajectory_adjustment/TrajectorySpreadingTest.cpp
-  )
-  add_dependencies(test_trajectory_spreading
   )
   target_link_libraries(test_trajectory_spreading
     ${PROJECT_NAME}

@@ -10,8 +10,6 @@ set(AMENT_PACKAGE_DEPENDENCIES
   ocs2_robotic_tools
 )
 
-
-
 foreach(Dependency IN ITEMS ${AMENT_PACKAGE_DEPENDENCIES})
   find_package(${Dependency} REQUIRED)
 endforeach()
@@ -42,7 +40,8 @@ add_library(${PROJECT_NAME}
   src/PinocchioEndEffectorKinematicsCppAd.cpp
   src/urdf.cpp
 )
-add_dependencies(${PROJECT_NAME}
+ament_target_dependencies(${PROJECT_NAME}
+  ${AMENT_PACKAGE_DEPENDENCIES}
 )
 target_link_libraries(${PROJECT_NAME}
   ${pinocchio_LIBRARIES}
@@ -89,6 +88,7 @@ ament_add_gtest(testPinocchioInterface
 target_link_libraries(testPinocchioInterface
   gtest_main
   ${PROJECT_NAME}
+)
 endif()
 ###################################
 ## ament specific configuration ##

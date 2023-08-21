@@ -28,7 +28,8 @@ add_library(${PROJECT_NAME}
   src/BallbotMpcnetDefinition.cpp
   src/BallbotMpcnetInterface.cpp
 )
-add_dependencies(${PROJECT_NAME}
+ament_target_dependencies(${PROJECT_NAME}
+  ${AMENT_PACKAGE_DEPENDENCIES}
 )
 target_link_libraries(${PROJECT_NAME})
 

@@ -41,9 +41,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <ocs2_mobile_manipulator/ManipulatorModelInfo.h>
 #include <ocs2_mobile_manipulator/MobileManipulatorInterface.h>
 
-#include <ros/package.h>
-#include <ros/ros.h>
-#include <sensor_msgs/JointState.h>
+
+#include <rclcpp/rclcpp.hpp>
+#include <sensor_msgs/msg/joint_state.hpp>
 
 using namespace ocs2;
 using namespace mobile_manipulator;
@@ -52,11 +52,9 @@ std::unique_ptr<PinocchioInterface> pInterface;
 std::shared_ptr<PinocchioGeometryInterface> gInterface;
 std::unique_ptr<GeometryInterfaceVisualization> vInterface;
 
-sensor_msgs::JointState lastMsg;
+sensor_msgs::msg::JointState lastMsg;
 
-std::unique_ptr<ros::Publisher> pub;
-
-void jointStateCallback(sensor_msgs::JointStateConstPtr msg) {
+void jointStateCallback(sensor_msgs::msg::JointState::ConstPtr msg) {
   if (lastMsg.position == msg->position) {
     return;
   }
@@ -73,12 +71,15 @@ void jointStateCallback(sensor_msgs::JointStateConstPtr msg) {
 
 int main(int argc, char** argv) {
   // Initialize ros node
-  ros::init(argc, argv, "distance_visualization");
-  ros::NodeHandle nodeHandle;
+  rclcpp::init(argc, argv);
+  rclcpp::Node::SharedPtr nodeHandle = std::make_shared<rclcpp::Node>("distance_visualization");
+  
   // Get ROS parameters
-  std::string urdfPath, taskFile;
-  nodeHandle.getParam("/taskFile", taskFile);
-  nodeHandle.getParam("/urdfFile", urdfPath);
+  nodeHandle->declare_parameter("taskFile", "");
+  std::string taskFile = nodeHandle->get_parameter("taskFile").as_string();
+
+  nodeHandle->declare_parameter("urdfFile", "");
+  std::string urdfFile = nodeHandle->get_parameter("urdfFile").as_string();
 
   // read the task file
   boost::property_tree::ptree pt;
@@ -93,7 +94,7 @@ int main(int argc, char** argv) {
   loadData::loadPtreeValue<std::string>(pt, baseFrame, "model_information.baseFrame", false);
 
   // create pinocchio interface
-  pInterface.reset(new PinocchioInterface(::ocs2::mobile_manipulator::createPinocchioInterface(urdfPath, modelType)));
+  pInterface.reset(new PinocchioInterface(::ocs2::mobile_manipulator::createPinocchioInterface(urdfFile, modelType)));
 
   std::cerr << "\n #### Model Information:";
   std::cerr << "\n #### =============================================================================\n";
@@ -122,9 +123,10 @@ int main(int argc, char** argv) {
 
   vInterface.reset(new GeometryInterfaceVisualization(*pInterface, *gInterface, nodeHandle, baseFrame));
 
-  ros::Subscriber sub = nodeHandle.subscribe("joint_states", 1, &jointStateCallback);
+  rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr sub = 
+    nodeHandle->create_subscription<sensor_msgs::msg::JointState>("joint_states", 1, &jointStateCallback);
 
-  ros::spin();
+  rclcpp::spin(nodeHandle);
 
   return 0;
 }

@@ -63,29 +63,29 @@ class LeggedRobotVisualizer : public DummyObserver {
    * @param maxUpdateFrequency : maximum publish frequency measured in MPC time.
    */
   LeggedRobotVisualizer(PinocchioInterface pinocchioInterface, CentroidalModelInfo centroidalModelInfo,
-                        const PinocchioEndEffectorKinematics& endEffectorKinematics, ros::NodeHandle& nodeHandle,
+                        const PinocchioEndEffectorKinematics& endEffectorKinematics, rclcpp::Node::SharedPtr& nodeHandle,
                         scalar_t maxUpdateFrequency = 100.0);
 
   ~LeggedRobotVisualizer() override = default;
 
   void update(const SystemObservation& observation, const PrimalSolution& primalSolution, const CommandData& command) override;
 
-  void launchVisualizerNode(ros::NodeHandle& nodeHandle);
+  void launchVisualizerNode(rclcpp::Node::SharedPtr& nodeHandle);
 
   void publishTrajectory(const std::vector<SystemObservation>& system_observation_array, scalar_t speed = 1.0);
 
-  void publishObservation(ros::Time timeStamp, const SystemObservation& observation);
+  void publishObservation(rclcpp::Time timeStamp, const SystemObservation& observation);
 
-  void publishDesiredTrajectory(ros::Time timeStamp, const TargetTrajectories& targetTrajectories);
+  void publishDesiredTrajectory(rclcpp::Time timeStamp, const TargetTrajectories& targetTrajectories);
 
-  void publishOptimizedStateTrajectory(ros::Time timeStamp, const scalar_array_t& mpcTimeTrajectory,
+  void publishOptimizedStateTrajectory(rclcpp::Time timeStamp, const scalar_array_t& mpcTimeTrajectory,
                                        const vector_array_t& mpcStateTrajectory, const ModeSchedule& modeSchedule);
 
  private:
   LeggedRobotVisualizer(const LeggedRobotVisualizer&) = delete;
-  void publishJointTransforms(ros::Time timeStamp, const vector_t& jointAngles) const;
-  void publishBaseTransform(ros::Time timeStamp, const vector_t& basePose);
-  void publishCartesianMarkers(ros::Time timeStamp, const contact_flag_t& contactFlags, const std::vector<vector3_t>& feetPositions,
+  void publishJointTransforms(rclcpp::Time timeStamp, const vector_t& jointAngles) const;
+  void publishBaseTransform(rclcpp::Time timeStamp, const vector_t& basePose);
+  void publishCartesianMarkers(rclcpp::Time timeStamp, const contact_flag_t& contactFlags, const std::vector<vector3_t>& feetPositions,
                                const std::vector<vector3_t>& feetForces) const;
 
   PinocchioInterface pinocchioInterface_;
@@ -95,12 +95,12 @@ class LeggedRobotVisualizer : public DummyObserver {
   tf::TransformBroadcaster tfBroadcaster_;
   std::unique_ptr<robot_state_publisher::RobotStatePublisher> robotStatePublisherPtr_;
 
-  ros::Publisher costDesiredBasePositionPublisher_;
-  std::vector<ros::Publisher> costDesiredFeetPositionPublishers_;
+  rclcpp::Publisher<>::SharedPtr costDesiredBasePositionPublisher_;
+  std::vector<rclcpp::Publisher<>::SharedPtr> costDesiredFeetPositionPublishers_;
 
-  ros::Publisher stateOptimizedPublisher_;
+  rclcpp::Publisher<>::SharedPtr stateOptimizedPublisher_;
 
-  ros::Publisher currentStatePublisher_;
+  rclcpp::Publisher<>::SharedPtr currentStatePublisher_;
 
   scalar_t lastTime_;
   scalar_t minPublishTimeDifference_;

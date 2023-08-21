@@ -35,8 +35,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <ocs2_ros_interfaces/mrt/MRT_ROS_Dummy_Loop.h>
 #include <ocs2_ros_interfaces/mrt/MRT_ROS_Interface.h>
 
-#include <ros/init.h>
-#include <ros/package.h>
+#include <rclcpp/rclcpp.hpp>
 
 using namespace ocs2;
 using namespace mobile_manipulator;
@@ -45,13 +44,19 @@ int main(int argc, char** argv) {
   const std::string robotName = "mobile_manipulator";
 
   // Initialize ros node
-  ros::init(argc, argv, robotName + "_mrt");
-  ros::NodeHandle nodeHandle;
+  rclcpp::init(argc, argv);
+  rclcpp::Node::SharedPtr nodeHandle = std::make_shared<rclcpp::Node>(robotName + "_mrt");
+  
   // Get node parameters
-  std::string taskFile, libFolder, urdfFile;
-  nodeHandle.getParam("/taskFile", taskFile);
-  nodeHandle.getParam("/libFolder", libFolder);
-  nodeHandle.getParam("/urdfFile", urdfFile);
+  nodeHandle->declare_parameter("taskFile", "");
+  std::string taskFile = nodeHandle->get_parameter("taskFile").as_string();
+
+  nodeHandle->declare_parameter("libFolder", "");
+  std::string libFolder = nodeHandle->get_parameter("libFolder").as_string();
+
+  nodeHandle->declare_parameter("urdfFile", "");
+  std::string urdfFile = nodeHandle->get_parameter("urdfFile").as_string();
+  
   std::cerr << "Loading task file: " << taskFile << std::endl;
   std::cerr << "Loading library folder: " << libFolder << std::endl;
   std::cerr << "Loading urdf file: " << urdfFile << std::endl;

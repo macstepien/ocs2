@@ -12,8 +12,6 @@ set(AMENT_PACKAGE_DEPENDENCIES
   ocs2_raisim_ros
 )
 
-
-
 foreach(Dependency IN ITEMS ${AMENT_PACKAGE_DEPENDENCIES})
   find_package(${Dependency} REQUIRED)
 endforeach()
@@ -32,7 +30,8 @@ add_library(${PROJECT_NAME}
   src/LeggedRobotRaisimConversions.cpp
   src/LeggedRobotRaisimVisualizer.cpp
 )
-add_dependencies(${PROJECT_NAME}
+ament_target_dependencies(${PROJECT_NAME}
+  ${AMENT_PACKAGE_DEPENDENCIES}
 )
 target_link_libraries(${PROJECT_NAME})
 target_compile_options(${PROJECT_NAME} PUBLIC ${OCS2_CXX_FLAGS})

@@ -29,8 +29,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #pragma once
 
+#include <rclcpp/rclcpp.hpp>
+
 #include <robot_state_publisher/robot_state_publisher.h>
-#include <tf/transform_broadcaster.h>
+#include <tf2_ros/transform_broadcaster.h>
 
 #include <ocs2_ros_interfaces/mrt/DummyObserver.h>
 
@@ -41,14 +43,14 @@ namespace ballbot {
 
 class BallbotDummyVisualization final : public DummyObserver {
  public:
-  explicit BallbotDummyVisualization(ros::NodeHandle& nodeHandle) { launchVisualizerNode(nodeHandle); }
+  explicit BallbotDummyVisualization(rclcpp::Node::SharedPtr& nodeHandle) { launchVisualizerNode(nodeHandle); }
 
   ~BallbotDummyVisualization() override = default;
 
   void update(const SystemObservation& observation, const PrimalSolution& policy, const CommandData& command) override;
 
  private:
-  void launchVisualizerNode(ros::NodeHandle& nodeHandle);
+  void launchVisualizerNode(rclcpp::Node::SharedPtr& nodeHandle);
 
   std::unique_ptr<robot_state_publisher::RobotStatePublisher> robotStatePublisherPtr_;
   tf::TransformBroadcaster tfBroadcaster_;

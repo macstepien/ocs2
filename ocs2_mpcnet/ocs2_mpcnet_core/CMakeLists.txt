@@ -38,7 +38,8 @@ add_library(${PROJECT_NAME}
   src/rollout/MpcnetRolloutManager.cpp
   src/MpcnetInterfaceBase.cpp
 )
-add_dependencies(${PROJECT_NAME}
+ament_target_dependencies(${PROJECT_NAME}
+  ${AMENT_PACKAGE_DEPENDENCIES}
 )
 target_link_libraries(${PROJECT_NAME}
   onnxruntime

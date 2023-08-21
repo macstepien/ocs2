@@ -38,7 +38,7 @@ grid_map_msgs::GridMapPtr RaisimHeightmapRosConverter::convertHeightmapToGridmap
   grid_map_msgs::GridMapPtr gridMapMsg(new grid_map_msgs::GridMap());
 
   gridMapMsg->info.header.frame_id = frameId;
-  gridMapMsg->info.header.stamp = ros::Time::now();
+  gridMapMsg->info.header.stamp = rclcpp::Clock(RCL_ROS_TIME).now();
 
   const auto xResolution = heightMap.getXSize() / static_cast<double>(heightMap.getXSamples());
   const auto yResolution = heightMap.getYSize() / static_cast<double>(heightMap.getYSamples());
@@ -88,7 +88,7 @@ std::unique_ptr<raisim::HeightMap> RaisimHeightmapRosConverter::convertGridmapTo
 
 void RaisimHeightmapRosConverter::publishGridmap(const raisim::HeightMap& heightMap, const std::string& frameId) {
   if (!gridmapPublisher_) {
-    gridmapPublisher_.reset(new ros::Publisher(nodeHandle_.advertise<grid_map_msgs::GridMap>("/raisim_heightmap", 1, true)));
+    gridmapPublisher_.reset(new rclcpp::Publisher<>::SharedPtr(nodeHandle_.advertise<grid_map_msgs::GridMap>("/raisim_heightmap", 1, true)));
   }
   auto gridMapMsg = convertHeightmapToGridmap(heightMap, frameId);
   gridmapPublisher_->publish(gridMapMsg);

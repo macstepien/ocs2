@@ -37,7 +37,6 @@ add_library(${PROJECT_NAME}
   src/SqpSettings.cpp
   src/SqpSolver.cpp
 )
-# add_dependencies(${PROJECT_NAME})
 ament_target_dependencies(${PROJECT_NAME}
   ${AMENT_PACKAGE_DEPENDENCIES}
 )

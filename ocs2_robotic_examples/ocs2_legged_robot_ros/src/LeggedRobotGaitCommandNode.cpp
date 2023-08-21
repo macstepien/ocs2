@@ -27,8 +27,8 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ******************************************************************************/
 
-#include <ros/init.h>
-#include <ros/package.h>
+#include <rclcpp/rclcpp.hpp>
+
 
 #include "ocs2_legged_robot_ros/gait/GaitKeyboardPublisher.h"
 
@@ -39,8 +39,9 @@ int main(int argc, char* argv[]) {
   const std::string robotName = "legged_robot";
 
   // Initialize ros node
-  ros::init(argc, argv, robotName + "_mpc_mode_schedule");
-  ros::NodeHandle nodeHandle;
+  rclcpp::init(argc, argv);
+  rclcpp::Node::SharedPtr nodeHandle = std::make_shared<rclcpp::Node>(robotName + "_mpc_mode_schedule");
+  
   // Get node parameters
   std::string gaitCommandFile;
   nodeHandle.getParam("/gaitCommandFile", gaitCommandFile);

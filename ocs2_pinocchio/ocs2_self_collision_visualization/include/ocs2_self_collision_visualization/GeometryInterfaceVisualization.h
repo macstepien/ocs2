@@ -29,16 +29,18 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #pragma once
 
-#include <ros/ros.h>
+#include <rclcpp/rclcpp.hpp>
 
 #include <ocs2_pinocchio_interface/PinocchioInterface.h>
 #include <ocs2_self_collision/PinocchioGeometryInterface.h>
+
+#include <visualization_msgs/msg/marker_array.hpp>
 
 namespace ocs2 {
 
 class GeometryInterfaceVisualization {
  public:
-  GeometryInterfaceVisualization(PinocchioInterface pinocchioInterface, PinocchioGeometryInterface geometryInterface, ros::NodeHandle& nh,
+  GeometryInterfaceVisualization(PinocchioInterface pinocchioInterface, PinocchioGeometryInterface geometryInterface, rclcpp::Node::SharedPtr& nodeHandle,
                                  std::string pinocchioWorldFrame = "world");
   virtual ~GeometryInterfaceVisualization() = default;
 
@@ -48,7 +50,7 @@ class GeometryInterfaceVisualization {
   PinocchioInterface pinocchioInterface_;
   PinocchioGeometryInterface geometryInterface_;
 
-  ros::Publisher markerPublisher_;
+  rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr markerPublisher_;
 
   std::string pinocchioWorldFrame_;
 };

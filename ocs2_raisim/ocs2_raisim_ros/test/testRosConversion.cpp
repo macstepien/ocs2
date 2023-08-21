@@ -55,8 +55,8 @@ TEST(ocs2_raisim_ros, HeightmapRosConversion) {
 }
 
 int main(int argc, char** argv) {
-  // required for ros::Time()
-  ros::Time::init();
+  // required for rclcpp::Time()
+  rclcpp::Time::init();
 
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();

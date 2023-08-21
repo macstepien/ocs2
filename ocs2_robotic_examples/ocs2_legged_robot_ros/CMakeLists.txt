@@ -26,8 +26,6 @@ set(AMENT_PACKAGE_DEPENDENCIES
   ocs2_legged_robot
 )
 
-
-
 foreach(Dependency IN ITEMS ${AMENT_PACKAGE_DEPENDENCIES})
   find_package(${Dependency} REQUIRED)
 endforeach()
@@ -65,6 +63,9 @@ add_library(${PROJECT_NAME}
 )
 add_dependencies(${PROJECT_NAME}
   ${${PROJECT_NAME}_EXPORTED_TARGETS}
+)
+ament_target_dependencies(${PROJECT_NAME}
+  ${AMENT_PACKAGE_DEPENDENCIES}
 )
 target_link_libraries(${PROJECT_NAME}
   ${Boost_LIBRARIES}

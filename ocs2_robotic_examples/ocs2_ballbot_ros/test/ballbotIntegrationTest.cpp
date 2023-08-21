@@ -29,7 +29,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <gtest/gtest.h>
 
-#include <ros/package.h>
+
 
 #include <ocs2_ddp/GaussNewtonDDP_MPC.h>
 #include <ocs2_ros_interfaces/mpc/MPC_ROS_Interface.h>

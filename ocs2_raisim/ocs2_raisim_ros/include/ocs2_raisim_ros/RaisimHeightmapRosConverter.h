@@ -43,7 +43,7 @@ class RaisimHeightmapRosConverter {
  public:
   /**
    * @brief Default constructor
-   * @note This will instantiate a ros::NodeHandle. ros::init(...) should be called by the user before instantiation of this class.
+   * @note This will instantiate a rclcpp::Node::SharedPtr. ros::init(...) should be called by the user before instantiation of this class.
    */
   RaisimHeightmapRosConverter() = default;
 
@@ -81,8 +81,8 @@ class RaisimHeightmapRosConverter {
   static std::pair<std::unique_ptr<raisim::HeightMap>, grid_map_msgs::GridMapConstPtr> getHeightmapFromRos(double timeout = 5.0);
 
  private:
-  ros::NodeHandle nodeHandle_;
-  std::unique_ptr<ros::Publisher> gridmapPublisher_;
+  rclcpp::Node::SharedPtr nodeHandle_;
+  std::unique_ptr<rclcpp::Publisher<>::SharedPtr> gridmapPublisher_;
 };
 
 }  // namespace ocs2

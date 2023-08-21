@@ -42,8 +42,6 @@ include_directories(
 add_executable(cartpole_mpc
   src/CartpoleMpcNode.cpp
 )
-# add_dependencies(cartpole_mpc
-# )
 ament_target_dependencies(cartpole_mpc rclcpp ocs2_cartpole ocs2_ros_interfaces ocs2_mpc ocs2_ddp
 )
 # target_link_libraries(cartpole_mpc ${LIBS}
@@ -54,8 +52,6 @@ add_executable(cartpole_dummy_test
   src/DummyCartpoleNode.cpp
   src/CartpoleDummyVisualization.cpp
 )
-# add_dependencies(cartpole_dummy_test
-# )
 ament_target_dependencies(cartpole_dummy_test
 rclcpp ocs2_cartpole ocs2_ros_interfaces ocs2_mpc ocs2_ddp
 )

@@ -29,7 +29,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <gtest/gtest.h>
 
-#include <ros/package.h>
+
 
 #include <ocs2_raisim_core/RaisimRolloutSettings.h>
 

@@ -34,7 +34,8 @@ add_library(${PROJECT_NAME}
   src/end_effector/EndEffectorDistanceConstraint.cpp
   src/end_effector/EndEffectorDistanceConstraintCppAd.cpp
 )
-add_dependencies(${PROJECT_NAME}
+ament_target_dependencies(${PROJECT_NAME}
+  ${AMENT_PACKAGE_DEPENDENCIES}
 )
 target_link_libraries(${PROJECT_NAME})
 target_compile_options(${PROJECT_NAME} PUBLIC ${OCS2_CXX_FLAGS})

@@ -45,8 +45,9 @@ TargetTrajectories commandLineToTargetTrajectories(const vector_t& commadLineTar
 
 int main(int argc, char* argv[]) {
   const std::string robotName = "double_integrator";
-  ::ros::init(argc, argv, robotName + "_target");
-  ::ros::NodeHandle nodeHandle;
+  ::rclcpp::init(argc, argv);
+  rclcpp::Node::SharedPtr nodeHandle = std::make_shared<rclcpp::Node>(robotName + "_target");
+  
 
   const scalar_array_t goalLimit{10.0};  // [deltaX]
   TargetTrajectoriesKeyboardPublisher targetPoseCommand(nodeHandle, robotName, goalLimit, &commandLineToTargetTrajectories);

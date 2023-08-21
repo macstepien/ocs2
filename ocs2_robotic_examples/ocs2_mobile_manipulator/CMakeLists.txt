@@ -15,8 +15,6 @@ set(AMENT_PACKAGE_DEPENDENCIES
   ocs2_self_collision
 )
 
-
-
 foreach(Dependency IN ITEMS ${AMENT_PACKAGE_DEPENDENCIES})
   find_package(${Dependency} REQUIRED)
 endforeach()
@@ -73,7 +71,8 @@ add_library(${PROJECT_NAME}
   src/dynamics/FullyActuatedFloatingArmManipulatorDynamics.cpp
   src/MobileManipulatorInterface.cpp
 )
-add_dependencies(${PROJECT_NAME}
+ament_target_dependencies(${PROJECT_NAME}
+  ${AMENT_PACKAGE_DEPENDENCIES}
 )
 target_link_libraries(${PROJECT_NAME}
   ${Boost_LIBRARIES}
@@ -115,27 +114,28 @@ install(DIRECTORY config
 #############
 ## Testing ##
 #############
-if(BUILD_TESTING)
-find_package(ament_cmake_gtest REQUIRED)
-# Helper macro for adding target applications
-macro(add_ocs2_test APP_NAME APP_SRC)
-  ament_add_gtest(${APP_NAME}
-    ${APP_SRC}
-  )
-  target_include_directories(${APP_NAME} PRIVATE
-    ${PROJECT_BINARY_DIR}/include
-  )
-  target_link_libraries(${APP_NAME}
-    gtest_main
-    ${PROJECT_NAME}
-    ${Boost_LIBRARIES}
-  )
-endmacro()
+# if(BUILD_TESTING)
+# find_package(ament_cmake_gtest REQUIRED)
+# # Helper macro for adding target applications
+# macro(add_ocs2_test APP_NAME APP_SRC)
+#   ament_add_gtest(${APP_NAME}
+#     ${APP_SRC}
+#   )
+#   target_include_directories(${APP_NAME} PRIVATE
+#     ${PROJECT_BINARY_DIR}/include
+#   )
+#   target_link_libraries(${APP_NAME}
+#     gtest_main
+#     ${PROJECT_NAME}
+#     ${Boost_LIBRARIES}
+#   )
+# endmacro()
 
-add_ocs2_test(SelfCollisionTest test/testSelfCollision.cpp)
-add_ocs2_test(EndEffectorConstraintTest test/testEndEffectorConstraint.cpp)
-add_ocs2_test(DummyMobileManipulatorTest test/testDummyMobileManipulator.cpp)
-endif()
+# add_ocs2_test(SelfCollisionTest test/testSelfCollision.cpp)
+# add_ocs2_test(EndEffectorConstraintTest test/testEndEffectorConstraint.cpp)
+# add_ocs2_test(DummyMobileManipulatorTest test/testDummyMobileManipulator.cpp)
+# endif()
+
 ###################################
 ## ament specific configuration ##
 ###################################

@@ -6,8 +6,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(AMENT_PACKAGE_DEPENDENCIES
   ament_cmake
-  roslib
-  tf
+  rclcpp
+  # tf
   urdf
   kdl_parser
   robot_state_publisher
@@ -24,8 +24,6 @@ set(AMENT_PACKAGE_DEPENDENCIES
   ocs2_self_collision_visualization
   ocs2_mobile_manipulator
 )
-
-
 
 foreach(Dependency IN ITEMS ${AMENT_PACKAGE_DEPENDENCIES})
   find_package(${Dependency} REQUIRED)
@@ -69,7 +67,8 @@ link_directories(
 add_executable(mobile_manipulator_mpc_node
   src/MobileManipulatorMpcNode.cpp
 )
-add_dependencies(mobile_manipulator_mpc_node
+ament_target_dependencies(mobile_manipulator_mpc_node
+  ${AMENT_PACKAGE_DEPENDENCIES}
 )
 target_link_libraries(mobile_manipulator_mpc_node
 )
@@ -79,7 +78,8 @@ target_compile_options(mobile_manipulator_mpc_node PUBLIC ${FLAGS})
 add_executable(mobile_manipulator_distance_visualization
   src/MobileManipulatorDistanceVisualization.cpp
 )
-add_dependencies(mobile_manipulator_distance_visualization
+ament_target_dependencies(mobile_manipulator_distance_visualization
+  ${AMENT_PACKAGE_DEPENDENCIES}
 )
 target_link_libraries(mobile_manipulator_distance_visualization
 )
@@ -90,7 +90,8 @@ add_executable(mobile_manipulator_dummy_mrt_node
   src/MobileManipulatorDummyMRT.cpp
   src/MobileManipulatorDummyVisualization.cpp
 )
-add_dependencies(mobile_manipulator_dummy_mrt_node
+ament_target_dependencies(mobile_manipulator_dummy_mrt_node
+  ${AMENT_PACKAGE_DEPENDENCIES}
 )
 target_link_libraries(mobile_manipulator_dummy_mrt_node
 )
@@ -100,7 +101,8 @@ target_compile_options(mobile_manipulator_dummy_mrt_node PUBLIC ${FLAGS})
 add_executable(mobile_manipulator_target
   src/MobileManipulatorTarget.cpp
 )
-add_dependencies(mobile_manipulator_target
+ament_target_dependencies(mobile_manipulator_target
+  ${AMENT_PACKAGE_DEPENDENCIES}
 )
 target_link_libraries(mobile_manipulator_target
 )
