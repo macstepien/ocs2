@@ -82,6 +82,7 @@ add_dependencies(legged_robot_ddp_mpc
 )
 target_link_libraries(legged_robot_ddp_mpc
   ${PROJECT_NAME}
+)
 target_compile_options(legged_robot_ddp_mpc PRIVATE ${OCS2_CXX_FLAGS})
 
 ## SQP-MPC node for legged robot
@@ -94,6 +95,7 @@ add_dependencies(legged_robot_sqp_mpc
 )
 target_link_libraries(legged_robot_sqp_mpc
   ${PROJECT_NAME}
+)
 target_compile_options(legged_robot_sqp_mpc  PRIVATE ${OCS2_CXX_FLAGS})
 
 ## IPM-MPC node for legged robot
@@ -106,6 +108,7 @@ add_dependencies(legged_robot_ipm_mpc
 )
 target_link_libraries(legged_robot_ipm_mpc
   ${PROJECT_NAME}
+)
 target_compile_options(legged_robot_ipm_mpc  PRIVATE ${OCS2_CXX_FLAGS})
 
 # Dummy node
