@@ -10,7 +10,7 @@ set(AMENT_PACKAGE_DEPENDENCIES
   ocs2_ddp
   ocs2_mpc
   ocs2_robotic_tools
-  ocs2_robotic_assets
+  # ocs2_robotic_assets
   ocs2_pinocchio_interface
   ocs2_self_collision
 )
@@ -140,8 +140,8 @@ install(DIRECTORY config
 ## ament specific configuration ##
 ###################################
 
-ament_export_dependencies(Boost ${AMENT_PACKAGE_DEPENDENCIES}
-pinocchio)
+ament_export_dependencies(${AMENT_PACKAGE_DEPENDENCIES}
+  Boost pinocchio)
 
 ament_export_include_directories(include
   ${EIGEN3_INCLUDE_DIRS})
