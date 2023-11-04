@@ -6,8 +6,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(AMENT_PACKAGE_DEPENDENCIES
   ament_cmake
-  roslib
-  tf
   urdf
   kdl_parser
   robot_state_publisher
@@ -121,6 +119,7 @@ add_dependencies(legged_robot_dummy
 )
 target_link_libraries(legged_robot_dummy
   ${PROJECT_NAME}
+)
 target_compile_options(legged_robot_dummy PRIVATE ${OCS2_CXX_FLAGS})
 
 # Keyboard command node for target trajectories
@@ -133,6 +132,7 @@ add_dependencies(legged_robot_target
 )
 target_link_libraries(legged_robot_target
   ${PROJECT_NAME}
+)
 target_compile_options(legged_robot_target PRIVATE ${OCS2_CXX_FLAGS})
 
 # Keyboard command node for gait
@@ -145,6 +145,7 @@ add_dependencies(legged_robot_gait_command
 )
 target_link_libraries(legged_robot_gait_command
   ${PROJECT_NAME}
+)
 target_compile_options(legged_robot_gait_command PRIVATE ${OCS2_CXX_FLAGS})
 
 #########################

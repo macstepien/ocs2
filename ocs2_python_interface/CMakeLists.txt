@@ -28,6 +28,9 @@ include_directories(
 add_library(${PROJECT_NAME}
   src/PythonInterface.cpp
 )
+ament_target_dependencies(${PROJECT_NAME}
+  ${AMENT_PACKAGE_DEPENDENCIES}
+)
 
 #############
 ## Install ##

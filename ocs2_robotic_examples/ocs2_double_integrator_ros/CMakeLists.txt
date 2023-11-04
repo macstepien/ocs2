@@ -13,7 +13,6 @@ set(AMENT_PACKAGE_DEPENDENCIES
   ocs2_double_integrator
   ocs2_robotic_tools
   ocs2_robotic_assets
-  roslib
 )
 
 foreach(Dependency IN ITEMS ${AMENT_PACKAGE_DEPENDENCIES})
@@ -41,8 +40,6 @@ include_directories(
 add_executable(double_integrator_mpc
   src/DoubleIntegratorMpcNode.cpp
 )
-add_dependencies(double_integrator_mpc
-)
 target_link_libraries(double_integrator_mpc
 )
 
@@ -51,16 +48,12 @@ add_executable(double_integrator_dummy_test
   src/DummyDoubleIntegratorNode.cpp
   src/DoubleIntegratorDummyVisualization.cpp
 )
-add_dependencies(double_integrator_dummy_test
-)
 target_link_libraries(double_integrator_dummy_test
 )
 
 # Target node
 add_executable(double_integrator_target
   src/DoubleIntegratorTargetPoseCommand.cpp
-)
-add_dependencies(double_integrator_target
 )
 target_link_libraries(double_integrator_target
   ${Boost_LIBRARIES}

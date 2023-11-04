@@ -20,7 +20,6 @@ set(AMENT_PACKAGE_DEPENDENCIES
   ocs2_robotic_tools
   ocs2_ballbot
   ocs2_robotic_assets
-  roslib
 )
 
 foreach(Dependency IN ITEMS ${AMENT_PACKAGE_DEPENDENCIES})
@@ -71,6 +70,7 @@ add_dependencies(ballbot_dummy_test
 )
 target_link_libraries(ballbot_dummy_test
   ${PROJECT_NAME}
+)
 target_compile_options(ballbot_dummy_test PRIVATE ${OCS2_CXX_FLAGS})
 
 # Target node

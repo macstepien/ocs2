@@ -18,7 +18,7 @@ set(AMENT_PACKAGE_DEPENDENCIES
   ocs2_ddp
   ocs2_mpc
   ocs2_robotic_tools
-  ocs2_robotic_assets
+  # ocs2_robotic_assets
   ocs2_pinocchio_interface
   ocs2_self_collision
   ocs2_self_collision_visualization
@@ -64,26 +64,27 @@ link_directories(
 )
 
 # MPC node
-add_executable(mobile_manipulator_mpc_node
-  src/MobileManipulatorMpcNode.cpp
-)
-ament_target_dependencies(mobile_manipulator_mpc_node
-  ${AMENT_PACKAGE_DEPENDENCIES}
-)
-target_link_libraries(mobile_manipulator_mpc_node
-)
-target_compile_options(mobile_manipulator_mpc_node PUBLIC ${FLAGS})
+# add_executable(mobile_manipulator_mpc_node
+#   src/MobileManipulatorMpcNode.cpp
+# )
+# ament_target_dependencies(mobile_manipulator_mpc_node
+#   ${AMENT_PACKAGE_DEPENDENCIES}
+# )
+# target_link_libraries(mobile_manipulator_mpc_node
+#   ${Boost_LIBRARIES}
+# )
+# target_compile_options(mobile_manipulator_mpc_node PUBLIC ${FLAGS})
 
 # DistanceVisualization node
-add_executable(mobile_manipulator_distance_visualization
-  src/MobileManipulatorDistanceVisualization.cpp
-)
-ament_target_dependencies(mobile_manipulator_distance_visualization
-  ${AMENT_PACKAGE_DEPENDENCIES}
-)
-target_link_libraries(mobile_manipulator_distance_visualization
-)
-target_compile_options(mobile_manipulator_distance_visualization PUBLIC ${FLAGS})
+# add_executable(mobile_manipulator_distance_visualization
+#   src/MobileManipulatorDistanceVisualization.cpp
+# )
+# ament_target_dependencies(mobile_manipulator_distance_visualization
+#   ${AMENT_PACKAGE_DEPENDENCIES}
+# )
+# target_link_libraries(mobile_manipulator_distance_visualization
+# )
+# target_compile_options(mobile_manipulator_distance_visualization PUBLIC ${FLAGS})
 
 # Dummy node
 add_executable(mobile_manipulator_dummy_mrt_node
@@ -91,7 +92,8 @@ add_executable(mobile_manipulator_dummy_mrt_node
   src/MobileManipulatorDummyVisualization.cpp
 )
 ament_target_dependencies(mobile_manipulator_dummy_mrt_node
-  ${AMENT_PACKAGE_DEPENDENCIES}
+  rclcpp ocs2_mobile_manipulator ocs2_ros_interfaces ocs2_mpc ocs2_ddp urdf
+  robot_state_publisher ocs2_self_collision_visualization
 )
 target_link_libraries(mobile_manipulator_dummy_mrt_node
 )
@@ -132,8 +134,8 @@ install(DIRECTORY include/${PROJECT_NAME}/
 )
 install(
   TARGETS 
-    mobile_manipulator_mpc_node 
-    mobile_manipulator_distance_visualization
+    # mobile_manipulator_mpc_node 
+    # mobile_manipulator_distance_visualization
     mobile_manipulator_dummy_mrt_node 
     mobile_manipulator_target
   RUNTIME DESTINATION lib/${PROJECT_NAME}

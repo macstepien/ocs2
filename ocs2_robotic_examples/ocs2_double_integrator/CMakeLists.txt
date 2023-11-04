@@ -15,7 +15,6 @@ set(AMENT_PACKAGE_DEPENDENCIES
 )
 
 find_package(ament_cmake REQUIRED
-  roslib
   ${AMENT_PACKAGE_DEPENDENCIES}
 )
 

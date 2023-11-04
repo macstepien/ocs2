@@ -14,7 +14,6 @@
 
   <build_depend>cmake_clang_tools</build_depend>
 
-  <depend>roslib</depend>
   <depend>pybind11_catkin</depend>
 
   <depend>ocs2_core</depend>

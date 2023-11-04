@@ -6,13 +6,11 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(AMENT_PACKAGE_DEPENDENCIES
   ament_cmake
-  tf
   ocs2_mpc
   ocs2_ros_interfaces
   ocs2_robotic_tools
   ocs2_robotic_assets
   ocs2_quadrotor
-  roslib
 )
 
 foreach(Dependency IN ITEMS ${AMENT_PACKAGE_DEPENDENCIES})
@@ -40,8 +38,6 @@ include_directories(
 add_executable(quadrotor_mpc
   src/QuadrotorMpcNode.cpp
 )
-add_dependencies(quadrotor_mpc
-)
 target_link_libraries(quadrotor_mpc
 )
 
@@ -50,16 +46,12 @@ add_executable(quadrotor_dummy_test
   src/DummyQuadrotorNode.cpp
   src/QuadrotorDummyVisualization.cpp
 )
-add_dependencies(quadrotor_dummy_test
-)
 target_link_libraries(quadrotor_dummy_test
 )
 
 # Target node
 add_executable(quadrotor_target
   src/QuadrotorTargetPoseCommand.cpp
-)
-add_dependencies(quadrotor_target
 )
 target_link_libraries(quadrotor_target
   ${Boost_LIBRARIES}
